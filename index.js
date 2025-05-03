@@ -9,16 +9,13 @@ const SITE_SECTIONS = [
 ];
 
 function handleLocation() {
-    console.log("location");
     var section = window.location.href.split('#')[1];
-    console.log(section);
     if (SITE_SECTIONS.includes(section)) {
         document.querySelector("header").classList.remove("home");
         show(SITE_SECTIONS);
         hide(HOME_SECTIONS);
     } else {
         document.querySelector("header").classList.add("home");
-        console.log("home");
         show(HOME_SECTIONS);
         hide(SITE_SECTIONS);
     }
@@ -26,14 +23,12 @@ function handleLocation() {
 
 function show(ids) {
     ids.forEach(id => {
-        console.log(`showing: ${id}`);
         document.getElementById(id).classList.remove('hide');
     });
 }
 
 function hide(ids) {
     ids.forEach(id => {
-        console.log(`hiding: ${id}`);
         document.getElementById(id).classList.add('hide');
     });
 }
@@ -51,11 +46,14 @@ navToggle.addEventListener('click', toggleAriaExpanded);
 
 function toggleAriaExpanded() {
     const classes = Array.from(document.querySelector('header').classList);
-    console.log(`classes: ${classes}`);
     if (classes && classes.includes("home")) {
         return;
     }
-    console.log("click");
     const isNavOpen = navToggle.getAttribute('aria-expanded') === 'true';
     navToggle.setAttribute('aria-expanded', isNavOpen ? 'false' : 'true');
 }
+
+document.getElementById('main-link').addEventListener('click', () => {
+    navToggle.setAttribute('aria-expanded', 'false');
+
+});
