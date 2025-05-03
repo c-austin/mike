@@ -24,15 +24,17 @@ function handleLocation() {
 }
 
 function show(ids) {
-    ids.forEach(id => {
-        document.getElementById(id).removeAttribute('hidden');
-    });
+    // ids.forEach(id => {
+    //     console.log(`showing: ${id}`);
+    //     document.getElementById(id).removeAttribute('hidden');
+    // });
 }
 
 function hide(ids) {
-    ids.forEach(id => {
-        document.getElementById(id).setAttribute('hidden', true);
-    });
+    // ids.forEach(id => {
+    //     console.log(`hiding: ${id}`);
+    //     document.getElementById(id).setAttribute('hidden', true);
+    // });
 }
 
 window.addEventListener('load', handleLocation);
