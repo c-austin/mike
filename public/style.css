@@ -135,6 +135,10 @@ header.home {
   flex-direction: column;
   align-items: end;
 
+  #main-link {
+    width: 100%;
+  }
+
   #nav-container {
     margin-top: 4rem;
     margin-right: 6rem;
@@ -255,18 +259,18 @@ main {
 }
 
 section {
-  height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height));
   width: 100%;
   background-size: cover;
   background-position: center;
 }
 
 section:nth-child(1) {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 section:nth-child(2) {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 #home {
@@ -313,6 +317,15 @@ section:nth-child(2) {
   }
   li + li {
     padding-top: 1rem;
+    @media (width < 760px) {
+      padding-top: 1.5rem;
+    }
+  }
+  li:last-child {
+      margin-bottom: 40rem;
+      @media (width < 760px) {
+      margin-bottom: 2rem;
+    }
   }
   a,
   a:visited {
