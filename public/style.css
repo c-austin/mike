@@ -259,6 +259,36 @@ section:nth-child(2) {
     background-image: url("assets/tour-dates.jpg");
     background-position: top;
   }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (width < 760px) {
+    justify-content: start;
+    text-align: center;
+  }
+}
+
+#bio-content {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5%;
+  @media (width < 760px) {
+    padding-right: 5%;
+  }
+  h1 {
+    font-size: 2.5rem;
+    @media (width < 760px) {
+      padding-top: 4rem;
+    }
+  }
+  p {
+    width: 25%;
+    padding-top: 2rem;
+    @media (width < 760px) {
+      width: 100%;
+    }
+  }
 }
 
 #contact {
