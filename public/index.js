@@ -24,17 +24,17 @@ function handleLocation() {
 }
 
 function show(ids) {
-    // ids.forEach(id => {
-    //     console.log(`showing: ${id}`);
-    //     document.getElementById(id).removeAttribute('hidden');
-    // });
+    ids.forEach(id => {
+        console.log(`showing: ${id}`);
+        document.getElementById(id).classList.remove('hide');
+    });
 }
 
 function hide(ids) {
-    // ids.forEach(id => {
-    //     console.log(`hiding: ${id}`);
-    //     document.getElementById(id).setAttribute('hidden', true);
-    // });
+    ids.forEach(id => {
+        console.log(`hiding: ${id}`);
+        document.getElementById(id).classList.add('hide');
+    });
 }
 
 window.addEventListener('load', handleLocation);
