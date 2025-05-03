@@ -41,8 +41,8 @@ window.addEventListener('popstate', handleLocation);
 const navToggle = document.querySelector('[aria-controls="primary-nav"]');
 const primaryNav = document.querySelector('nav');
 
-const links = document.querySelectorAll('a');
-links.forEach(link => link.addEventListener('click', toggleAriaExpanded))
+const navLinks = document.querySelectorAll('nav a');
+navLinks.forEach(link => link.addEventListener('click', toggleAriaExpanded))
 
 navToggle.addEventListener('click', toggleAriaExpanded);
 

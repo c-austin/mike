@@ -180,6 +180,12 @@ nav ul {
   }
 }
 
+main {
+  section + section {
+    margin-top: var(--header-height);
+  }
+}
+
 section {
   height: calc(100vh - var(--header-height));
   width: 100%;
@@ -203,22 +209,34 @@ section:nth-child(2) {
 }
 
 #tour {
-  background-color: lightblue;
+  background-image: url("assets/tour-dates.jpg");
+  max-width: 100%;
   @media (width < 760px) {
-    background-color: blue;
+    background-image: url("assets/wall.jpg");
   }
 }
 
+#tour-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
 #bio {
-  background-color: goldenrod;
+  background-image: url("assets/bio-page.jpg");
+  background-position: top;
   @media (width < 760px) {
-    background-color: yellow;
+    background-image: url("assets/tour-dates.jpg");
+    background-position: top;
   }
 }
 
 #contact {
-  background-color: lightpink;
+  background-image: url("assets/contact-page.jpg");
   @media (width < 760px) {
-    background-color: pink;
+    background-image: url("assets/wall.jpg");
+    background-position: right;
   }
 }
