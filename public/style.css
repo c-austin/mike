@@ -123,6 +123,9 @@ header {
 nav ul {
   display: flex;
   padding-right: 48px;
+  a,a:visited {
+    color: var(--theme-beige);
+  }
   li + li {
     padding-left: 16px;
   }
@@ -294,7 +297,37 @@ section:nth-child(2) {
 #contact {
   background-image: url("assets/contact-page.jpg");
   @media (width < 760px) {
-    background-image: url("assets/wall.jpg");
-    background-position: right;
+    background-image: url("assets/contact-page.jpg");
+    background-position: center;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+#contact-content {
+  display: flex;
+  flex-direction: column;
+}
+
+#contact-message {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  @media (width < 760px) {
+    margin-top: 2rem;
+    font-size: 1rem;
+  }
+}
+
+#contact-email {
+  margin-top: 2rem;
+  font-size: 3rem;
+  color: var(--theme-beige);
+  background-color: var(--theme-red);
+
+  @media (width < 760px) {
+    margin-top: 3rem;
+    font-size: 2rem;
   }
 }
