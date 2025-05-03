@@ -13,10 +13,11 @@ function handleLocation() {
     var section = window.location.href.split('#')[1];
     console.log(section);
     if (SITE_SECTIONS.includes(section)) {
-        console.log("site");
+        document.querySelector("header").classList.remove("home");
         show(SITE_SECTIONS);
         hide(HOME_SECTIONS);
     } else {
+        document.querySelector("header").classList.add("home");
         console.log("home");
         show(HOME_SECTIONS);
         hide(SITE_SECTIONS);

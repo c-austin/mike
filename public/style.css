@@ -118,6 +118,16 @@ header {
   width: 100%;
   top: 0;
   left: 0;
+
+  #logo-container {
+    width: 16rem;
+    padding-left: 2rem;
+    display: flex;
+  }
+
+  svg {
+    fill: var(--theme-beige);
+  }
 }
 
 header.home {
@@ -128,6 +138,10 @@ header.home {
   #nav-container {
     margin-top: 4rem;
     margin-right: 6rem;
+  }
+
+  svg {
+    fill: var(--theme-red);
   }
 
   #logo-container {
