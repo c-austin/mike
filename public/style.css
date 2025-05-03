@@ -126,16 +126,32 @@ nav ul {
   li + li {
     padding-left: 16px;
   }
-}`
+}
 
 #nav-button {
-    display: none;
+  display: none;
+  height: 36px;
+  width: 36px;
+  margin-right: 12px;
+  background: var(--theme-beige);
+  border: none;
+  border-radius: 4px;
+  /* img {
+        content: url("assets/cross.svg");
+    } */
+}
+
+#nav-button[aria-expanded="true"] img {
+  content: url("assets/cross.svg");
+}
+#nav-button[aria-expanded="false"] img {
+  content: url("assets/hamburger.svg");
 }
 
 @media (width < 760px) {
-    #nav-button {
-        display: block;
-    }
+  #nav-button {
+    display: block;
+  }
   [aria-expanded="true"] ~ nav {
     position: fixed;
     top: var(--header-height);
@@ -146,14 +162,14 @@ nav ul {
     align-items: center;
     background: var(--theme-red);
     ul {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0;
+      li {
         padding: 0;
-        li {
-            padding: 0;
-            text-align: center;
-        }
+        text-align: center;
+      }
     }
   }
   [aria-expanded="false"] ~ nav {
