@@ -164,6 +164,28 @@ header.home {
   a,a:visited {
     color: var(--theme-red);
   }
+
+  @media (width < 760px) {
+    align-items: center;
+    #nav-button {
+      display: none;
+    }
+    #nav-container {
+      margin: 0;
+      margin-top: 1rem;
+    }
+    nav {
+      display: block !important;
+      ul {
+        flex-direction: row;
+        font-size: 1rem;
+        li + li {
+          padding: 0;
+          padding-left: 1rem;
+        }
+      }
+    }
+  }
 }
 
 nav ul {

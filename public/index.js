@@ -50,6 +50,11 @@ navLinks.forEach(link => link.addEventListener('click', toggleAriaExpanded))
 navToggle.addEventListener('click', toggleAriaExpanded);
 
 function toggleAriaExpanded() {
+    const classes = Array.from(document.querySelector('header').classList);
+    console.log(`classes: ${classes}`);
+    if (classes && classes.includes("home")) {
+        return;
+    }
     console.log("click");
     const isNavOpen = navToggle.getAttribute('aria-expanded') === 'true';
     navToggle.setAttribute('aria-expanded', isNavOpen ? 'false' : 'true');
