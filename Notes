@@ -1,0 +1,11 @@
+Notes:
+    Landing page won't be scrollable. You hit it, and you can click a link and it will take you to that part, which will be scrollable to the other parts.
+
+    Header/Nav:
+        For home:
+            Desktop looks as is
+            Mobile.... horizontal list underneath... maybe two row?
+
+        For other:
+            Desktop looks as is (No highlighting of the active page to start)
+            Mobile will be a hamburder drop down

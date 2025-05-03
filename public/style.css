@@ -1,0 +1,208 @@
+/* Pretty standard CSS reset */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* https://kilianvalkhof.com/2022/css-html/your-css-reset-needs-text-size-adjust-probably/ */
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  /* https://www.scottohara.me/blog/2019/01/12/lists-and-safari.html */
+  [role="list"] {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-block-size: 100vh;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  button,
+  input,
+  label {
+    line-height: 1.1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  img,
+  picture {
+    max-inline-size: 100%;
+    display: block;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  ul,
+  ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer variables {
+  :root {
+    --theme-red: red;
+    --theme-beige: beige;
+    --header-height: 4rem;
+  }
+}
+
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+      scroll-padding: var(--header-height);
+    }
+  }
+  html {
+    font-family: "B612 Mono", monospace;
+    font-weight: bold;
+    color: var(--theme-red);
+    background-color: var(--theme-red);
+  }
+  a {
+    text-decoration: none;
+  }
+}
+
+header {
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--theme-red);
+
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+nav ul {
+  display: flex;
+  padding-right: 48px;
+  li + li {
+    padding-left: 16px;
+  }
+}`
+
+#nav-button {
+    display: none;
+}
+
+@media (width < 760px) {
+    #nav-button {
+        display: block;
+    }
+  [aria-expanded="true"] ~ nav {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--theme-red);
+    ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0;
+        li {
+            padding: 0;
+            text-align: center;
+        }
+    }
+  }
+  [aria-expanded="false"] ~ nav {
+    display: none;
+  }
+  [aria-controls="primary-nav"] {
+    display: block;
+  }
+}
+
+section {
+  height: calc(100vh - var(--header-height));
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+section:nth-child(1) {
+  height: 100vh;
+}
+
+section:nth-child(2) {
+  height: 100vh;
+}
+
+#home {
+  background-color: lightgreen;
+  @media (width < 760px) {
+    background-color: green;
+  }
+}
+
+#tour {
+  background-color: lightblue;
+  @media (width < 760px) {
+    background-color: blue;
+  }
+}
+
+#bio {
+  background-color: goldenrod;
+  @media (width < 760px) {
+    background-color: yellow;
+  }
+}
+
+#contact {
+  background-color: lightpink;
+  @media (width < 760px) {
+    background-color: pink;
+  }
+}
