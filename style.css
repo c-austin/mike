@@ -142,7 +142,6 @@ header {
 }
 
 #main-content {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   @media (width < 760px) {
@@ -161,6 +160,9 @@ header {
   margin-left: 6rem;
   @media (width < 760px) {
     display: none;
+  }
+  img {
+    border-radius: 5px;
   }
 }
 
@@ -205,6 +207,13 @@ header.home {
       padding-top: 1rem;
     }
     li:last-child {
+      a {
+        color: var(--theme-beige);
+        background-color: var(--theme-red);
+        padding-left: 6px;
+        padding-right: 4px;
+      }
+
       @media (width >= 760px) {
         display: none;
       }
@@ -474,4 +483,5 @@ section:nth-child(2) {
   margin-top: 12px;
   padding-left: 6px;
   padding-right: 6px;
+  font-size: 1.5rem;
 }
