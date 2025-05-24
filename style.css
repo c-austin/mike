@@ -141,6 +141,31 @@ header {
   content: url("assets/beige-logo.svg");
 }
 
+#main-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  @media (width < 760px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
+
+#home-album-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: 20%;
+  margin-top: 4rem;
+  margin-left: 6rem;
+  @media (width < 760px) {
+    display: none;
+  }
+}
+
+
+
 header.home {
   background-color: transparent;
   flex-direction: column;
@@ -179,6 +204,11 @@ header.home {
     li + li {
       padding-top: 1rem;
     }
+    li:last-child {
+      @media (width >= 760px) {
+        display: none;
+      }
+    }
   }
   a,a:visited {
     color: var(--theme-red);
@@ -198,6 +228,8 @@ header.home {
       ul {
         flex-direction: row;
         font-size: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
         li + li {
           padding: 0;
           padding-left: 1rem;
@@ -431,4 +463,15 @@ section:nth-child(2) {
 
 .hide {
   display: none !important;
+}
+
+#boom-bap {
+  color: var(--theme-beige);
+  background-color: var(--theme-red);
+  text-align: center;
+  width: fit-content;
+  margin: auto;
+  margin-top: 12px;
+  padding-left: 6px;
+  padding-right: 6px;
 }

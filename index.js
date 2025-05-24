@@ -1,5 +1,6 @@
 const HOME_SECTIONS = [
-    'home'
+    'home',
+    'home-album-container'
 ];
 
 const SITE_SECTIONS = [
