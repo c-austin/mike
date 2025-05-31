@@ -421,10 +421,6 @@ section:nth-child(2) {
   color: red;
 }
 
-#tour-dates-wrapper {
-  height: 0;
-}
-
 #bio {
   background-image: url("assets/bio-page.jpg");
   background-position: top;
