@@ -176,28 +176,44 @@ header.home {
 
   @media (width < 760px) {
     align-items: center;
-    #nav-button {
-      display: none;
-    }
-    #nav-container {
-      margin: 0;
-      margin-top: 1rem;
-    }
-    nav {
-      display: block !important;
-      ul {
-        flex-direction: row;
-        font-size: 1rem;
-        flex-wrap: wrap;
-        justify-content: center;
-        li + li {
-          padding: 0;
-          padding-left: 1rem;
-        }
-      }
-    }
   }
 }
+
+header.home #nav-button {
+  @media (width < 760px) {
+    display: none;
+  }
+}
+
+header.home #nav-container {
+  margin-top: 4rem;
+  margin-right: 6rem;
+  @media (width < 760px) {
+    margin: 0;
+    margin-top: 1rem;
+  }
+}
+header.home nav {
+  @media (width < 760px) {
+    display: block !important;
+  }
+}
+
+
+header.home nav ul {
+  flex-direction: column;
+  font-size: 2rem;
+  padding: 0;
+
+  @media (width < 760px) {
+    flex-direction: row;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+
+  }
+}
+
 
 header.home #main-link {
   width: 100%;
@@ -208,10 +224,7 @@ header.home #logo-image {
   width: 100%;
 }
 
-header.home #nav-container {
-  margin-top: 4rem;
-  margin-right: 6rem;
-}
+
 
 header.home svg {
   fill: var(--theme-red);
@@ -223,18 +236,18 @@ header.home #logo-container {
   padding-right: 2rem;
   padding-top: 2rem;
 }
-header.home nav ul {
-  flex-direction: column;
-  font-size: 2rem;
-  padding: 0;
-}
 
 
 header.home nav ul li {
   padding: 0;
 }
+
 header.home nav ul li + li {
   padding-top: 1rem;
+  @media (width < 760px) {
+    padding: 0;
+    padding-left: 1rem;
+  }
 }
 header.home nav ul li:last-child {
   @media (width >= 760px) {
@@ -406,6 +419,10 @@ section:nth-child(2) {
 #tour-content a,
 #tour-content a:visited {
   color: red;
+}
+
+#tour-dates-wrapper {
+  height: 0;
 }
 
 #bio {
