@@ -515,3 +515,45 @@ section:nth-child(2) {
   padding-right: 6px;
   font-size: 1.5rem;
 }
+
+#social-links ul {
+  display: flex;
+  justify-content: center;
+}
+
+#social-links li {
+  padding: 12px;
+  width: 60px;
+}
+
+#social-links img {
+  width: 100%;
+}
+
+#insta-logo {
+  content: url("assets/social-logo/insta.svg");
+}
+
+#spotify-logo {
+  content: url("assets/social-logo/spotify.svg");
+}
+
+#yt-logo {
+  content: url("assets/social-logo/yt.svg");
+}
+
+#apple-music-logo {
+  content: url("assets/social-logo/apple-music.svg");
+}
+
+#patreon-logo {
+  content: url("assets/social-logo/patreon.svg");
+}
+
+#fb-logo {
+  content: url("assets/social-logo/fb.svg");
+}
+
+#contact {
+  min-height: calc(100vh - var(--header-height) - 84px);
+}
