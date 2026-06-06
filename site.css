@@ -1,0 +1,323 @@
+/* Shared structure for both "worlds" (musician = style.css, producer = producer.css).
+   Each page stylesheet defines the theme variables this file consumes:
+     --page-bg  --bar-bg  --bar-ink  --home-ink
+     --logo-home  --logo-bar  --icon-menu  --icon-close
+     --active-bg  --active-ink  --header-height
+   Behaviour (home/site header toggle, tabbed sections) lives in site.js. */
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  body,
+  h1,
+  p {
+    margin: 0;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  img {
+    max-inline-size: 100%;
+    display: block;
+  }
+
+  button {
+    padding: 0;
+    font: inherit;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+@layer base {
+  html {
+    font-family: "B612 Mono", monospace;
+    font-weight: bold;
+    color: var(--home-ink);
+    background-color: var(--page-bg);
+  }
+
+  body {
+    min-height: 100vh;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ===================================================================
+   HEADER — site (sub-page) mode: compact fixed top bar
+   =================================================================== */
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bar-bg);
+}
+
+#logo-container {
+  width: 14rem;
+  padding-left: 1.5rem;
+  display: flex;
+}
+
+#logo-image {
+  content: var(--logo-bar);
+  width: 100%;
+}
+
+#nav-button {
+  display: none;
+  height: 36px;
+  width: 36px;
+  margin-right: 12px;
+  background: transparent;
+  border: none;
+}
+
+#nav-button img {
+  width: 100%;
+  height: 100%;
+}
+
+#nav-button[aria-expanded="true"] img {
+  content: var(--icon-close);
+}
+#nav-button[aria-expanded="false"] img {
+  content: var(--icon-menu);
+}
+
+nav ul {
+  display: flex;
+  padding-right: 1.5rem;
+}
+
+nav ul li + li {
+  padding-left: 28px;
+}
+
+nav ul a,
+nav ul a:visited {
+  color: var(--bar-ink);
+}
+
+/* Highlight the section currently being viewed */
+header:not(.home) nav a.active {
+  background-color: var(--active-bg);
+  color: var(--active-ink);
+  padding-inline: 6px;
+}
+
+@media (width < 760px) {
+  #nav-button {
+    display: block;
+  }
+  [aria-expanded="true"] ~ nav {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bar-bg);
+  }
+  [aria-expanded="false"] ~ nav {
+    display: none;
+  }
+  [aria-expanded="true"] ~ nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  [aria-expanded="true"] ~ nav ul li + li {
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+}
+
+/* ===================================================================
+   HEADER — home mode: transparent overlay, big logo + text links
+   =================================================================== */
+
+header.home {
+  height: auto;
+  background-color: transparent;
+  flex-direction: column;
+  align-items: end;
+}
+
+header.home #main-link {
+  width: 100%;
+}
+
+header.home #logo-container {
+  width: 100%;
+  padding: 2rem 2rem 0;
+}
+
+header.home #logo-image {
+  content: var(--logo-home);
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+header.home #nav-button {
+  display: none;
+}
+
+/* Links always visible in home mode, even on mobile */
+header.home nav {
+  display: block !important;
+}
+
+header.home #nav-container {
+  margin-top: 4rem;
+  margin-right: 6rem;
+}
+
+header.home nav ul {
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0;
+  font-size: 2rem;
+}
+
+header.home nav ul li + li {
+  padding-top: 1.75rem;
+}
+
+header.home a,
+header.home a:visited {
+  color: var(--home-ink);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 1);
+}
+
+@media (width < 760px) {
+  header.home {
+    align-items: center;
+  }
+  header.home #nav-container {
+    margin: 1rem 0 0;
+  }
+  header.home nav ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+  }
+  header.home nav ul li + li {
+    padding-top: 0;
+    padding-left: 1rem;
+  }
+}
+
+/* ===================================================================
+   SECTIONS — tabbed: one shown at a time, full-bleed photo background
+   =================================================================== */
+
+main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  width: 100%;
+  background-color: var(--page-bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+#home {
+  flex: 1 1 auto;
+  min-height: 100vh;
+}
+
+.section:not(#home) {
+  min-height: 100vh;
+  padding-top: calc(var(--header-height) + 38vh);
+  padding-bottom: calc(var(--footer-height) + 3rem);
+}
+
+.hide {
+  display: none !important;
+}
+
+/* ===================================================================
+   FOOTER — social links, pinned to the bottom of the viewport
+   =================================================================== */
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  min-height: var(--footer-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bar-bg);
+}
+
+#social-links ul {
+  display: flex;
+  justify-content: center;
+}
+
+#social-links li {
+  padding: 8px 10px;
+}
+
+#social-links img {
+  width: 30px;
+  filter: var(--icon-filter);
+}
+
+#insta-logo {
+  content: url("assets/social-logo/insta.svg");
+}
+#spotify-logo {
+  content: url("assets/social-logo/spotify.svg");
+}
+#yt-logo {
+  content: url("assets/social-logo/yt.svg");
+}
+#apple-music-logo {
+  content: url("assets/social-logo/apple-music.svg");
+}
+#patreon-logo {
+  content: url("assets/social-logo/patreon.svg");
+}
+#fb-logo {
+  content: url("assets/social-logo/fb.svg");
+}

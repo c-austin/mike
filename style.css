@@ -1,146 +1,36 @@
-/* Pretty standard CSS reset */
-@layer reset {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+/* Musician ("live") world — theme + content.
+   Shared structure/behaviour: site.css + site.js. */
 
-  /* https://kilianvalkhof.com/2022/css-html/your-css-reset-needs-text-size-adjust-probably/ */
-  html {
-    -moz-text-size-adjust: none;
-    -webkit-text-size-adjust: none;
-    text-size-adjust: none;
-  }
+:root {
+  --header-height: 4rem;
+  --footer-height: 52px;
 
-  button {
-    padding: 0;
-  }
-
-  body,
-  h1,
-  h2,
-  h3,
-  h4,
-  p,
-  figure,
-  blockquote,
-  dl,
-  dd {
-    margin: 0;
-  }
-
-  /* https://www.scottohara.me/blog/2019/01/12/lists-and-safari.html */
-  [role="list"] {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    min-block-size: 100vh;
-    line-height: 1.6;
-  }
-
-  h1,
-  h2,
-  h3,
-  button,
-  input,
-  label {
-    line-height: 1.1;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    text-wrap: balance;
-  }
-
-  p,
-  li {
-    text-wrap: pretty;
-  }
-
-  img,
-  picture {
-    max-inline-size: 100%;
-    display: block;
-  }
-
-  input,
-  button,
-  textarea,
-  select {
-    font: inherit;
-  }
-
-  ul,
-  ol {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
+  /* consumed by site.css */
+  --page-bg: red;
+  --bar-bg: red;
+  --bar-ink: beige;
+  --home-ink: red;
+  --logo-home: url("assets/red-logo.svg");
+  --logo-bar: url("assets/beige-logo.svg");
+  --icon-menu: url("assets/hamburger.svg");
+  --icon-close: url("assets/cross.svg");
+  --icon-filter: none;
+  --active-bg: beige;
+  --active-ink: red;
 }
 
-@layer variables {
-  :root {
-    --theme-red: red;
-    --theme-beige: beige;
-    --header-height: 4rem;
-  }
+/* Soften the shared 0.75 home-nav shadow on the musician side */
+header.home a,
+header.home a:visited {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
-@layer base {
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      scroll-behavior: smooth;
-      scroll-padding: var(--header-height);
-    }
-  }
-  html {
-    font-family: "B612 Mono", monospace;
-    font-weight: bold;
-    color: var(--theme-red);
-    background-color: var(--theme-red);
-  }
-  a {
-    text-decoration: none;
-  }
-}
+/* ---- Home: album thumbnail beside the links ---- */
 
-header {
-  height: var(--header-height);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--theme-red);
-
-  z-index: 10;
-  position: fixed;
+/* Home: album on the left, links on the right (full width so the album
+   stays hard-left across browsers instead of drifting toward center) */
+header.home #main-content {
   width: 100%;
-  top: 0;
-  left: 0;
-  
-}
-
-header #logo-container {
-  width: 16rem;
-  padding-left: 2rem;
-  display: flex;
-}
-
-header #logo-container image svg {
-  fill: purple;
-}
-
-header svg {
-  fill: var(--theme-beige);
-}
-
-#logo-image {
-  content: url("assets/beige-logo.svg");
 }
 
 #main-content {
@@ -165,260 +55,50 @@ header svg {
   }
 }
 
+/* The album belongs to the home view only */
+header:not(.home) #home-album-container {
+  display: none;
+}
+
 #home-album-container img {
   border-radius: 5px;
 }
 
-header.home {
-  background-color: transparent;
-  flex-direction: column;
-  align-items: end;
-
-  @media (width < 760px) {
-    align-items: center;
-  }
+#boom-bap {
+  color: var(--bar-ink);
+  background-color: var(--bar-bg);
+  text-align: center;
+  width: fit-content;
+  margin: 12px auto 0;
+  padding-inline: 6px;
+  font-size: 1.5rem;
 }
 
-header.home #nav-button {
-  @media (width < 760px) {
-    display: none;
-  }
+/* The "NEW RECORD!" link is a beige button, shown only on mobile home */
+header.home nav ul li.new-record-link a {
+  color: var(--bar-ink);
+  background-color: var(--bar-bg);
+  padding-left: 6px;
+  padding-right: 4px;
 }
 
-header.home #nav-container {
-  margin-top: 4rem;
-  margin-right: 6rem;
-  @media (width < 760px) {
-    margin: 0;
-    margin-top: 1rem;
-  }
-}
-header.home nav {
-  @media (width < 760px) {
-    display: block !important;
-  }
-}
-
-
-header.home nav ul {
-  flex-direction: column;
-  font-size: 2rem;
-  padding: 0;
-
-  @media (width < 760px) {
-    flex-direction: row;
-    font-size: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-
-  }
-}
-
-
-header.home #main-link {
-  width: 100%;
-}
-
-header.home #logo-image {
-  content: url("assets/red-logo.svg");
-  width: 100%;
-}
-
-
-
-header.home svg {
-  fill: var(--theme-red);
-}
-
-header.home #logo-container {
-  width: 100%;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-top: 2rem;
-}
-
-
-header.home nav ul li {
-  padding: 0;
-}
-
-header.home nav ul li + li {
-  padding-top: 1rem;
-  @media (width < 760px) {
-    padding: 0;
-    padding-left: 1rem;
-  }
-}
-header.home nav ul li:last-child {
+header.home nav ul li.new-record-link {
   @media (width >= 760px) {
     display: none;
   }
 }
 
-header.home nav ul li:last-child a {
-  color: var(--theme-beige);
-  background-color: var(--theme-red);
-  padding-left: 6px;
-  padding-right: 4px;
-}
-
-header.home a, header.home a:visited {
-  color: var(--theme-red);
-}
-
-nav ul {
-  display: flex;
-  padding-right: 48px;
-  
-}
-
-nav ul a, nav ul a:visited {
-  color: var(--theme-beige);
-}
-
-nav ul li + li {
-  padding-left: 16px;
-}
-
-#nav-button {
-  display: none;
-  height: 36px;
-  width: 36px;
-  margin-right: 12px;
-  background: transparent;
-  border: none;
-  border-radius: 4px;
-}
-
-#nav-button img {
-  width: 100%;
-  height: 100%;
-}
-
-#nav-button[aria-expanded="true"] img {
-  content: url("assets/cross.svg");
-}
-#nav-button[aria-expanded="false"] img {
-  content: url("assets/hamburger.svg");
-}
-
-@media (width < 760px) {
-  #nav-button {
-    display: block;
-  }
-  [aria-expanded="true"] ~ nav {
-    position: fixed;
-    top: var(--header-height);
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--theme-red);
-  }
-  [aria-expanded="false"] ~ nav {
-    display: none;
-  }
-  [aria-controls="primary-nav"] {
-    display: block;
-  }
-}
-
-@media (width < 760px) {
-  [aria-expanded="true"] ~ nav ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0;
-  }
-}
-
-@media (width < 760px) {
-  [aria-expanded="true"] ~ nav ul li {
-    padding: 0;
-    text-align: center;
-  }
-}
-
-main section + section {
-  margin-top: var(--header-height);
-}
-
-section {
-  min-height: calc(100vh - var(--header-height));
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-}
-
-section:nth-child(1) {
-  min-height: 100vh;
-}
-
-section:nth-child(2) {
-  min-height: 100vh;
-}
+/* ---- Section backgrounds ---- */
 
 #home {
   background-image: url("assets/home-page.jpg");
-  @media (width < 760px) {
-    background-color: background-image: url("assets/home-page.jpg");
-  }
 }
 
 #tour {
   background-image: url("assets/tour-dates.jpg");
-  max-width: 100%;
   @media (width < 760px) {
     background-image: url("assets/wall.jpg");
   }
-}
-
-#tour-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  height: 100%;
-  
-}
-
-#tour-content h1 {
-  font-size: 2.5rem;
-  margin-top: 6rem;
-  margin-bottom: 4rem;
-  @media (width < 760px) {
-    margin-top: 3.5rem;
-    margin-bottom: 2rem;
-  }
-}
-#tour-content a {
-  text-align: center;
-  @media (width < 760px) {
-    display: flex;
-    flex-direction: column;
-  }
-}
-#tour-content a .vert-bar {
-  @media (width < 760px) {
-    display: none;
-  }
-}
-#tour-content li + li {
-  padding-top: 1rem;
-  @media (width < 760px) {
-    padding-top: 1.5rem;
-  }
-}
-#tour-content li:last-child {
-    margin-bottom: 40rem;
-    @media (width < 760px) {
-    margin-bottom: 2rem;
-  }
-}
-#tour-content a,
-#tour-content a:visited {
-  color: red;
 }
 
 #bio {
@@ -428,12 +108,70 @@ section:nth-child(2) {
     background-image: url("assets/tour-dates.jpg");
     background-position: top;
   }
+}
+
+#contact {
+  background-image: url("assets/contact-page.jpg");
+  @media (width < 760px) {
+    background-position: center;
+  }
+}
+
+/* ---- Tour ---- */
+
+#tour-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  justify-content: start;
+  height: 100%;
+}
 
+#tour-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 4rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   @media (width < 760px) {
-    justify-content: start;
+    margin-bottom: 2rem;
+  }
+}
+
+#tour-content a,
+#tour-content a:visited {
+  color: var(--home-ink);
+  text-align: center;
+  @media (width < 760px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+#tour-content a .vert-bar {
+  @media (width < 760px) {
+    display: none;
+  }
+}
+
+#tour-content li + li {
+  padding-top: 1rem;
+  @media (width < 760px) {
+    padding-top: 1.5rem;
+  }
+}
+
+#tour-stay-tuned {
+  font-size: 1.75rem;
+  color: var(--home-ink);
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* ---- Bio ---- */
+
+#bio {
+  display: flex;
+  flex-direction: column;
+  @media (width < 760px) {
     text-align: center;
   }
 }
@@ -447,30 +185,22 @@ section:nth-child(2) {
   }
 }
 
-#bio-content h1 {
-  font-size: 2.5rem;
-  @media (width < 760px) {
-    padding-top: 4rem;
-  }
+#bio-content p {
+  max-width: 46rem;
+  font-size: clamp(1rem, 3.2vw, 1.35rem);
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
-#bio-content p {
-  width: 25%;
-  padding-top: 2rem;
-  @media (width < 760px) {
-    width: 100%;
-  }
+#bio-content p + p {
+  padding-top: 1rem;
 }
+
+/* ---- Contact ---- */
 
 #contact {
-  background-image: url("assets/contact-page.jpg");
-  @media (width < 760px) {
-    background-image: url("assets/contact-page.jpg");
-    background-position: center;
-  }
   display: flex;
   flex-direction: column;
-  justify-content: start;
   align-items: center;
 }
 
@@ -480,80 +210,28 @@ section:nth-child(2) {
 }
 
 #contact-message {
-  margin-top: 2rem;
   font-size: 1.5rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   @media (width < 760px) {
-    margin-top: 2rem;
     font-size: 1rem;
   }
 }
 
 #contact-email {
-  margin-top: 2rem;
+  margin-top: 1.25rem;
   font-size: 3rem;
-  color: var(--theme-beige);
-  background-color: var(--theme-red);
-
+  color: var(--bar-ink);
+  background-color: var(--bar-bg);
   @media (width < 760px) {
-    margin-top: 3rem;
+    margin-top: 1.5rem;
     font-size: 2rem;
   }
 }
 
-.hide {
-  display: none !important;
-}
-
-#boom-bap {
-  color: var(--theme-beige);
-  background-color: var(--theme-red);
-  text-align: center;
-  width: fit-content;
-  margin: auto;
-  margin-top: 12px;
-  padding-left: 6px;
-  padding-right: 6px;
-  font-size: 1.5rem;
-}
-
-#social-links ul {
-  display: flex;
-  justify-content: center;
-}
-
-#social-links li {
-  padding: 12px;
-  width: 60px;
-}
-
-#social-links img {
-  width: 100%;
-}
-
-#insta-logo {
-  content: url("assets/social-logo/insta.svg");
-}
-
-#spotify-logo {
-  content: url("assets/social-logo/spotify.svg");
-}
-
-#yt-logo {
-  content: url("assets/social-logo/yt.svg");
-}
-
-#apple-music-logo {
-  content: url("assets/social-logo/apple-music.svg");
-}
-
-#patreon-logo {
-  content: url("assets/social-logo/patreon.svg");
-}
-
-#fb-logo {
-  content: url("assets/social-logo/fb.svg");
-}
-
-#contact {
-  min-height: calc(100vh - var(--header-height) - 84px);
+/* Bio + Contact are short on mobile — sit them higher than the 38vh default */
+@media (width < 760px) {
+  .section#bio,
+  .section#contact {
+    padding-top: calc(var(--header-height) + 14vh);
+  }
 }

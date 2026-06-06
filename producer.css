@@ -1,0 +1,119 @@
+/* Producer ("studio") world — theme + content.
+   Shared structure/behaviour: site.css + site.js. */
+
+:root {
+  --header-height: 4rem;
+  --footer-height: 52px;
+
+  /* consumed by site.css */
+  --page-bg: #000;
+  --bar-bg: #000;
+  --bar-ink: #3cf03c;
+  --home-ink: #3cf03c;
+  --logo-home: url("assets/green-logo.svg");
+  --logo-bar: url("assets/green-logo.svg");
+  --icon-menu: url("assets/hamburger-green.svg");
+  --icon-close: url("assets/cross-green.svg");
+  --icon-filter: none;
+  --active-bg: #3cf03c;
+  --active-ink: #000;
+}
+
+/* ---- The studio photo: one fixed backdrop, identical framing on every view ---- */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--page-bg) url("assets/studio.jpg") center 28% / cover
+    no-repeat;
+}
+
+.section {
+  background: transparent;
+}
+
+/* A selected service: description sits lower over the photo
+   (vertical padding inherited from site.css .section:not(#home)) */
+.section#production,
+.section#previous,
+.section#mixing {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
+.service-content {
+  max-width: 46rem;
+}
+
+.service-block + .service-block {
+  margin-top: 2.5rem;
+}
+
+.credits {
+  color: #fff;
+  font-weight: 400;
+  font-size: clamp(0.9rem, 2.4vw, 1.05rem);
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 1);
+}
+
+.credits li {
+  padding-block: 0.55rem;
+}
+
+.credits li + li {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.desc-chip {
+  display: inline-block;
+  background-color: var(--bar-ink);
+  color: var(--page-bg);
+  letter-spacing: 0.08em;
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  padding: 2px 10px;
+  margin-bottom: 1rem;
+}
+
+.desc-body {
+  color: #fff;
+  font-weight: 400;
+  font-size: clamp(1rem, 3.2vw, 1.35rem);
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 1);
+}
+
+.desc-body + .desc-body {
+  margin-top: 0.85rem;
+}
+
+.desc-body a {
+  color: var(--bar-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---- Footer icons in scheme green ---- */
+
+#insta-logo {
+  content: url("assets/social-logo/insta-green.svg");
+}
+#spotify-logo {
+  content: url("assets/social-logo/spotify-green.svg");
+}
+#yt-logo {
+  content: url("assets/social-logo/yt-green.svg");
+}
+#apple-music-logo {
+  content: url("assets/social-logo/apple-music-green.svg");
+}
+#patreon-logo {
+  content: url("assets/social-logo/patreon-green.svg");
+}
+#fb-logo {
+  content: url("assets/social-logo/fb-green.svg");
+}

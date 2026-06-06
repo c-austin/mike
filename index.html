@@ -5,12 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mike Trask</title>
+    <link rel="preload" as="image" href="assets/home-page.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=B612+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="site.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -35,9 +37,10 @@
           >
             <img id="nav-img" alt="" />
           </button>
-          <nav>
+          <nav id="primary-nav">
             <ul>
-              <li><a href="#tour">DATES</a></li>
+              <li class="new-record-link"><a href="https://miketraskmusic.bandcamp.com/album/beet-2">NEW RECORD!</a></li>
+              <li><a href="#bio">BIO</a></li>
               <li>
                 <a target="_blank" href="https://miketraskmusic.bandcamp.com/"
                   >MUSIC</a
@@ -50,9 +53,9 @@
                   >VIDEO</a
                 >
               </li>
-              <li><a href="#bio">BIO</a></li>
+              <li><a href="#tour">TOUR</a></li>
+              <li><a href="producer.html">PRODUCTION</a></li>
               <li><a href="#contact">CONTACT</a></li>
-              <li><a href="https://miketraskmusic.bandcamp.com/album/beet-2">NEW RECORD!</a></li>
             </ul>
           </nav>
         </div>
@@ -64,74 +67,7 @@
         <div id="tour-content">
           <h1>TOUR DATES</h1>
           <div id="tour-dates-wrapper">
-            <ul>
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.showpass.com/les-moontunes/"
-                >
-                  <span>MAY 15</span>
-                  <span class="vert-bar"> | </span>
-                  <span>THE SEAHORSE HFX</span>
-                  <span class="vert-bar"> | </span>
-                  <span>$20</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.bandsintown.com/e/106553048-les-moontunes-at-aberdeen-cultural-centre"
-                >
-                  <span>MAY 16</span>
-                  <span class="vert-bar"> | </span>
-                  <span>ABERDEEN CENTRE MONCTON</span>
-                  <span class="vert-bar"> | </span>
-                  <span>$20</span>
-                </a>
-              </li>
-              <li>
-                <a target="_blank" href="https://www.paddlefestnb.ca/tickets">
-                  <span>MAY 17</span>
-                  <span class="vert-bar"> | </span>
-                  <span>PADDLEFEST</span>
-                  <span class="vert-bar"> | </span>
-                  <span>FESTIVAL $</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.tickettailor.com/events/ultrasoundmusic/1675867"
-                >
-                  <span>JUNE 7</span>
-                  <span class="vert-bar"> | </span>
-                  <span>SANCTUARY ARTS CENTRE DARTMOUTH</span>
-                  <span class="vert-bar"> | </span>
-                  <span>$20</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.facebook.com/events/504427995957571/"
-                >
-                  <span>JULY 5</span>
-                  <span class="vert-bar"> | </span>
-                  <span>BUTTS IN BOATS FESTIVAL MARGAREE CAPE BRETON</span>
-                  <span class="vert-bar"> | </span>
-                  <span>FESTIVAL $</span>
-                </a>
-              </li>
-              <li>
-                <a target="_blank" href="#home">
-                  <span>JULY 6</span>
-                  <span class="vert-bar"> | </span>
-                  <span>BIG SPRUCE BREWING BADDECK CAPE BRETON</span>
-                  <span class="vert-bar"> | </span>
-                  <span>$???</span>
-                </a>
-              </li>
-            </ul>
+            <p id="tour-stay-tuned">Stay Tuned!</p>
           </div>
         </div>
       </section>
@@ -154,18 +90,19 @@
           <p id="contact-email">INFO@MIKETRASK.CA</p>
         </div>
       </section>
-      <footer>
-        <div id="social-links">
-          <ul>
-            <li><a href="https://www.instagram.com/thisismiketrask/"><img id="insta-logo" src="" alt="" /></a></li>
-            <li><a href="https://open.spotify.com/artist/03QTVe1gbMUcw3wF1Vdn4k/"><img id="spotify-logo" src="" alt="" /></a></li>
-            <li><a href="https://www.youtube.com/@Whiskeybaptism"><img id="yt-logo" src="" alt="" /></a></li>
-            <li><a href="https://music.apple.com/ca/artist/mike-trask/204324697"><img id="apple-music-logo" src="" alt="" /></a></li>
-            <li><a href="https://www.patreon.com/MikeTrask"><img id="patreon-logo" src="" alt="" /></a></li>
-            <li><a href="https://www.facebook.com/miketraskmusic/"><img id="fb-logo" src="" alt="" /></a></li>
-          </ul>
-        </div></footer>
     </main>
+    <footer>
+      <div id="social-links">
+        <ul>
+          <li><a href="https://www.instagram.com/thisismiketrask/"><img id="insta-logo" alt="Instagram" /></a></li>
+          <li><a href="https://open.spotify.com/artist/03QTVe1gbMUcw3wF1Vdn4k/"><img id="spotify-logo" alt="Spotify" /></a></li>
+          <li><a href="https://www.youtube.com/@Whiskeybaptism"><img id="yt-logo" alt="YouTube" /></a></li>
+          <li><a href="https://music.apple.com/ca/artist/mike-trask/204324697"><img id="apple-music-logo" alt="Apple Music" /></a></li>
+          <li><a href="https://www.patreon.com/MikeTrask"><img id="patreon-logo" alt="Patreon" /></a></li>
+          <li><a href="https://www.facebook.com/miketraskmusic/"><img id="fb-logo" alt="Facebook" /></a></li>
+        </ul>
+      </div>
+    </footer>
+    <script src="site.js"></script>
   </body>
-  <script src="index.js"></script>
 </html>
