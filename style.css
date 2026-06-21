@@ -17,6 +17,9 @@
   --icon-filter: none;
   --active-bg: beige;
   --active-ink: red;
+
+  /* album-art yellow ("MIKE TRASK" lettering) — the new-single accent */
+  --single-accent: #fcf251;
 }
 
 /* Soften the shared 0.75 home-nav shadow on the musician side */
@@ -65,7 +68,7 @@ header:not(.home) #home-album-container {
 }
 
 #boom-bap {
-  color: var(--bar-ink);
+  color: var(--single-accent);
   background-color: var(--bar-bg);
   text-align: center;
   width: fit-content;
@@ -74,15 +77,16 @@ header:not(.home) #home-album-container {
   font-size: 1.5rem;
 }
 
-/* The "NEW RECORD!" link is a beige button, shown only on mobile home */
-header.home nav ul li.new-record-link a {
-  color: var(--bar-ink);
+/* The "NEW SINGLE" link is a beige button, shown only on mobile home
+   (desktop home uses the album thumbnail instead) */
+header.home nav ul li.new-single-link a {
+  color: var(--single-accent);
   background-color: var(--bar-bg);
   padding-left: 6px;
   padding-right: 4px;
 }
 
-header.home nav ul li.new-record-link {
+header.home nav ul li.new-single-link {
   @media (width >= 760px) {
     display: none;
   }
@@ -92,6 +96,11 @@ header.home nav ul li.new-record-link {
 
 #home {
   background-image: url("assets/home-page.jpg");
+}
+
+/* Promo still as a full-bleed backdrop */
+#single {
+  background-image: url("assets/new-single.jpg");
 }
 
 #tour {
@@ -234,4 +243,222 @@ header.home nav ul li.new-record-link {
   .section#contact {
     padding-top: calc(var(--header-height) + 14vh);
   }
+}
+
+/* ---- New single ---- */
+
+/* Center the release card over the photo; drop the 38vh photo offset */
+.section#single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: calc(var(--header-height) + 1rem);
+  padding-bottom: calc(var(--footer-height) + 1rem);
+  padding-inline: 1.5rem;
+  overflow-x: hidden;
+}
+
+.section#single > #single-content {
+  min-width: 0;
+}
+
+/* Red card behind just the content so the surrounding photo stays clear */
+#single-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 60rem;
+  padding: 2.5rem;
+  background-color: var(--bar-bg);
+  border-radius: 6px;
+  @media (width < 760px) {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    text-align: center;
+  }
+}
+
+#single-cover {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 22rem;
+  max-width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+#single-cover img {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+}
+
+/* Play badge over the cover — the cover is the promo-video trigger */
+#single-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bar-ink);
+  opacity: 0.8;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+#single-play svg {
+  width: 7rem;
+  height: 7rem;
+  margin-left: 0.3rem; /* optical centering — a play triangle's mass sits left */
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+}
+
+#single-cover:hover #single-play,
+#single-cover:focus-visible #single-play {
+  transform: translate(-50%, -50%) scale(1.08);
+  opacity: 1;
+}
+
+#single-cover:focus-visible {
+  outline: 2px solid var(--bar-ink);
+  outline-offset: 4px;
+}
+
+/* ---- Single page only: swap the beige theme accent for the album-art
+   yellow (#fcf251, the "MIKE TRASK" lettering). body.single-view is toggled
+   in site.js; same mechanism the producer theme uses for its green set. ---- */
+body.single-view {
+  --bar-ink: var(--single-accent);
+  --active-bg: var(--single-accent);
+  --logo-bar: url("assets/yellow-logo.svg");
+  --icon-menu: url("assets/hamburger-yellow.svg");
+  --icon-close: url("assets/cross-yellow.svg");
+}
+
+body.single-view #insta-logo {
+  content: url("assets/social-logo/insta-yellow.svg");
+}
+body.single-view #spotify-logo {
+  content: url("assets/social-logo/spotify-yellow.svg");
+}
+body.single-view #yt-logo {
+  content: url("assets/social-logo/yt-yellow.svg");
+}
+body.single-view #apple-music-logo {
+  content: url("assets/social-logo/apple-music-yellow.svg");
+}
+body.single-view #patreon-logo {
+  content: url("assets/social-logo/patreon-yellow.svg");
+}
+body.single-view #fb-logo {
+  content: url("assets/social-logo/fb-yellow.svg");
+}
+
+#single-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  color: var(--bar-ink);
+  @media (width < 760px) {
+    align-items: stretch;
+    width: 100%;
+  }
+}
+
+#single-eyebrow {
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--bar-ink);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+#single-title {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  line-height: 1.15;
+  margin-top: 0.25rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+#single-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  @media (width < 760px) {
+    justify-content: center;
+  }
+}
+
+.single-btn {
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.55rem 1.4rem;
+  border: 2px solid var(--bar-ink);
+  cursor: pointer;
+}
+
+.single-btn--primary {
+  background-color: var(--bar-ink);
+  color: var(--bar-bg);
+}
+
+/* ---- Promo video modal ---- */
+
+#promo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+#promo-modal.open {
+  display: flex;
+}
+
+#promo-dialog {
+  position: relative;
+  width: min(92vw, 60rem);
+}
+
+#promo-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+#promo-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 6px;
+}
+
+#promo-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--bar-ink);
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
