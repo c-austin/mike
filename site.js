@@ -22,6 +22,9 @@
     // On the single page, shift the beige theme accent to the album-art yellow
     document.body.classList.toggle("single-view", inSite && id === "single");
 
+    // The promo plays inline in #single — stop it when navigating away
+    if (id !== "single") stopPromo();
+
     sections.forEach((s) => {
       const visible = inSite ? s === target : s.id === HOME;
       s.classList.toggle("hide", !visible);
@@ -48,44 +51,51 @@
   if (navToggle) navToggle.addEventListener("click", toggleNav);
   navLinks.forEach((link) => link.addEventListener("click", closeNav));
 
-  // ----- Promo video modal (musician home only; no-ops elsewhere) -----
-  const promoOpen = document.getElementById("single-cover");
-  const promoModal = document.getElementById("promo-modal");
-  const promoClose = document.getElementById("promo-close");
+  // ----- Inline promo TV (single page only; no-ops elsewhere) -----
+  // The CRT sits in the page. Standby shows the album cover + play button;
+  // clicking powers on the tube and plays the self-hosted promo in the screen.
+  const tv = document.getElementById("single-tv");
+  const tvPlay = document.getElementById("tv-play");
   const promoFrame = document.getElementById("promo-frame");
-  // nocookie domain + an explicit referrerpolicy avoids YouTube embed
-  // "Error 153" (player config error when the referrer is missing/stripped)
-  const PROMO_SRC =
-    "https://www.youtube-nocookie.com/embed/0MFHKo-oGxU?autoplay=1&rel=0&playsinline=1";
+  // A native <video> has no player chrome at all (no title, logo, or controls).
+  const PROMO_SRC = "assets/WEBSITE.mp4";
 
-  function openPromo() {
-    promoFrame.innerHTML =
-      '<iframe src="' +
-      PROMO_SRC +
-      '" title="The East Coast Eats Cars — promo video"' +
-      ' referrerpolicy="strict-origin-when-cross-origin"' +
-      ' allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
-    promoModal.classList.add("open");
-    promoModal.setAttribute("aria-hidden", "false");
+  function startPromo() {
+    if (tv.classList.contains("playing")) return;
+    const video = document.createElement("video");
+    video.src = PROMO_SRC;
+    video.setAttribute("playsinline", ""); // play inline, not iOS native fullscreen
+    video.preload = "auto";
+    video.setAttribute("aria-label", "The East Coast Eats Cars — promo video");
+    // No on-screen controls, so let a click on the picture pause/resume.
+    video.addEventListener("click", function () {
+      if (video.paused) video.play();
+      else video.pause();
+    });
+    // When it finishes, switch the tube back to the standby cover + play button.
+    video.addEventListener("ended", stopPromo);
+    promoFrame.innerHTML = "";
+    promoFrame.appendChild(video);
+    tv.classList.add("playing"); // triggers the power-on; hides cover + button
+    // Triggered by a click, so unmuted autoplay is allowed; if a browser still
+    // blocks it, fall back to muted playback so the picture isn't frozen.
+    const played = video.play();
+    if (played && played.catch) {
+      played.catch(function () {
+        video.muted = true;
+        video.play();
+      });
+    }
   }
 
-  function closePromo() {
-    promoModal.classList.remove("open");
-    promoModal.setAttribute("aria-hidden", "true");
-    promoFrame.innerHTML = ""; // unload the player to stop playback
+  function stopPromo() {
+    if (!tv || !promoFrame) return; // no promo TV on this page
+    tv.classList.remove("playing");
+    promoFrame.innerHTML = ""; // removes the <video> and stops playback
   }
 
-  if (promoOpen && promoModal && promoFrame) {
-    promoOpen.addEventListener("click", openPromo);
-    promoModal.addEventListener("click", function (e) {
-      if (e.target === promoModal) closePromo();
-    });
-    if (promoClose) promoClose.addEventListener("click", closePromo);
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && promoModal.classList.contains("open")) {
-        closePromo();
-      }
-    });
+  if (tv && tvPlay && promoFrame) {
+    tvPlay.addEventListener("click", startPromo);
   }
 
   window.addEventListener("hashchange", render);

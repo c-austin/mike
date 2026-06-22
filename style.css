@@ -281,57 +281,97 @@ header.home nav ul li.new-single-link {
   }
 }
 
-#single-cover {
+/* The CRT sits in the album-cover slot of the card — a square unit: the photo
+   bezel (assets/tv-cut.png) layered on top, the screen in its opening beneath.
+   Standby shows the album cover + play triangle; clicking plays the promo. */
+#single-tv {
   position: relative;
-  display: block;
   flex: 0 0 auto;
-  width: 22rem;
+  width: 26rem;
   max-width: 100%;
-  padding: 0;
-  border: none;
-  background: none;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
+  aspect-ratio: 760 / 788; /* tv-cut.png, cropped tight to the TV body */
 }
 
-#single-cover img {
-  display: block;
-  width: 100%;
-  border-radius: 6px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
-}
-
-/* Play badge over the cover — the cover is the promo-video trigger */
-#single-play {
+#promo-tv-img {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none; /* clicks pass through to the play button / video below */
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* The picture tube sits in the photo's screen opening, bleeding a little under
+   the bezel so its rounded inner edge defines the visible screen.
+   Nudge these four values to align the picture within the opening. */
+#promo-screen {
+  position: absolute;
+  top: 9.64%;
+  left: 8.95%;
+  right: 7.63%;
+  bottom: 27.79%;
+  z-index: 1;
+  overflow: hidden;
+  background: rgb(88, 90, 83); /* powered-off CRT — the bloom surround */
+}
+
+/* Standby: the 4:3 promo still fills the screen (matches the tube ratio) */
+#tv-standby {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The play button covers the screen; the triangle is centred over the cover */
+#tv-play {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
   color: var(--bar-ink);
-  opacity: 0.8;
+  cursor: pointer;
+}
+
+#single-play {
+  display: flex;
+  opacity: 0.85;
   transition: transform 0.18s ease, opacity 0.18s ease;
 }
 
 #single-play svg {
-  width: 7rem;
-  height: 7rem;
-  margin-left: 0.3rem; /* optical centering — a play triangle's mass sits left */
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-left: 0.2rem; /* optical centering — a play triangle's mass sits left */
+  /* all-around dark halo so the triangle reads on any (busy/yellow) frame */
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 
-#single-cover:hover #single-play,
-#single-cover:focus-visible #single-play {
-  transform: translate(-50%, -50%) scale(1.08);
+#tv-play:hover #single-play,
+#tv-play:focus-visible #single-play {
+  transform: scale(1.08);
   opacity: 1;
 }
 
-#single-cover:focus-visible {
+#tv-play:focus-visible {
   outline: 2px solid var(--bar-ink);
   outline-offset: 4px;
+}
+
+/* While playing: hide the cover + play button so the video owns the tube */
+#single-tv.playing #tv-standby,
+#single-tv.playing #tv-play {
+  display: none;
 }
 
 /* ---- Single page only: swap the beige theme accent for the album-art
@@ -414,51 +454,102 @@ body.single-view #fb-logo {
   color: var(--bar-bg);
 }
 
-/* ---- Promo video modal ---- */
+/* ---- Promo playback: the picture powers on inside the CRT screen ---- */
 
-#promo-modal {
-  position: fixed;
+/* Power-on: after a beat on the off-state tube, a bright line strikes across
+   and the picture blooms open from it. */
+#single-tv.playing #promo-frame {
+  transform-origin: center;
+  animation: crt-on 1s cubic-bezier(0.22, 0.7, 0.28, 1) 0.3s both;
+}
+
+#single-tv.playing #promo-screen::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 18px 5px rgba(255, 255, 255, 0.75);
+  z-index: 3;
+  pointer-events: none;
+  animation: crt-beam 1s ease-out 0.3s both;
+}
+
+/* Corner vignette + faint scanlines over the screen (cover and video alike) */
+#promo-screen::after {
+  content: "";
+  position: absolute;
   inset: 0;
-  z-index: 100;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.85);
-}
-
-#promo-modal.open {
-  display: flex;
-}
-
-#promo-dialog {
-  position: relative;
-  width: min(92vw, 60rem);
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.5) 100%),
+    repeating-linear-gradient(rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
 }
 
 #promo-frame {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
-#promo-frame iframe {
+#promo-frame video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover; /* fill the tube opening; ~3% edge crop is hidden by bezel */
   border: 0;
-  border-radius: 6px;
 }
 
-#promo-close {
-  position: absolute;
-  top: -2.5rem;
-  right: 0;
-  font-size: 1.75rem;
-  line-height: 1;
-  color: var(--bar-ink);
-  background: transparent;
-  border: none;
-  cursor: pointer;
+/* The picture: held as a thin bright line while the beam strikes, then
+   blooms open vertically from the center and settles to normal. */
+@keyframes crt-on {
+  0% {
+    transform: scaleY(0.012);
+    filter: brightness(2.6) saturate(0);
+  }
+  25% {
+    transform: scaleY(0.012);
+    filter: brightness(2.6) saturate(0);
+  }
+  60% {
+    transform: scaleY(1);
+    filter: brightness(1.7) saturate(0.5);
+  }
+  100% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+/* The beam: a bright line streaks across the off-state tube, then fades */
+@keyframes crt-beam {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0.1);
+  }
+  12% {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1);
+  }
+  45% {
+    opacity: 0.8;
+  }
+  70%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #single-tv.playing #promo-frame {
+    animation: none;
+  }
+  #single-tv.playing #promo-screen::before {
+    display: none;
+  }
 }
