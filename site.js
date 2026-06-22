@@ -7,35 +7,41 @@
   const navToggle = document.querySelector('[aria-controls="primary-nav"]');
   const sections = Array.from(document.querySelectorAll("main > .section"));
   const navLinks = Array.from(document.querySelectorAll("nav a"));
-  const HOME = "home";
+  // Landing section when there's no hash — per page via <body data-home>.
+  // Producer omits it (defaults to "home"); the musician page uses "single".
+  const HOME = document.body.dataset.home || "home";
 
   function currentId() {
     return decodeURIComponent(window.location.hash.replace("#", ""));
   }
 
   function render() {
-    const id = currentId();
-    const target = sections.find((s) => s.id === id && s.id !== HOME);
-    const inSite = Boolean(target);
+    const id = currentId() || HOME;
+    const target =
+      sections.find((s) => s.id === id) ||
+      sections.find((s) => s.id === HOME) ||
+      sections[0];
+    if (!target) return;
 
-    header.classList.toggle("home", !inSite);
+    // Big overlay header only for the literal "home" landing (producer side)
+    header.classList.toggle("home", target.id === "home");
     // On the single page, shift the beige theme accent to the album-art yellow
-    document.body.classList.toggle("single-view", inSite && id === "single");
+    document.body.classList.toggle("single-view", target.id === "single");
 
     // The promo plays inline in #single — stop it when navigating away
-    if (id !== "single") stopPromo();
+    if (target.id !== "single") stopPromo();
 
-    sections.forEach((s) => {
-      const visible = inSite ? s === target : s.id === HOME;
-      s.classList.toggle("hide", !visible);
-    });
+    sections.forEach((s) => s.classList.toggle("hide", s !== target));
 
     navLinks.forEach((link) => {
       const hash = (link.getAttribute("href") || "").split("#")[1];
-      link.classList.toggle("active", inSite && hash === id);
+      link.classList.toggle(
+        "active",
+        Boolean(hash) && hash === target.id && target.id !== HOME
+      );
     });
 
-    if (!inSite) closeNav();
+    closeNav();
   }
 
   function closeNav() {
