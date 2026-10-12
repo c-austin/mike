@@ -6,113 +6,331 @@
   --footer-height: 52px;
 
   /* consumed by site.css */
-  --page-bg: red;
-  --bar-bg: red;
-  --bar-ink: beige;
-  --home-ink: red;
-  --logo-home: url("assets/red-logo.svg");
-  --logo-bar: url("assets/beige-logo.svg");
-  --icon-menu: url("assets/hamburger.svg");
-  --icon-close: url("assets/cross.svg");
+  --page-bg: rgb(47, 49, 100);
+  --bar-bg: rgb(47, 49, 100);
+  --bar-ink: #fff;
+  --home-ink: #fff;
+  --logo-home: url("assets/white-logo.svg");
+  --logo-bar: url("assets/white-logo.svg");
+  --icon-menu: url("assets/hamburger-white.svg");
+  --icon-close: url("assets/cross-white.svg");
   --icon-filter: none;
-  --active-bg: beige;
-  --active-ink: red;
-
-  /* album-art yellow ("MIKE TRASK" lettering) — the new-single accent */
-  --single-accent: #fcf251;
+  --active-bg: #fff;
+  --active-ink: rgb(47, 49, 100);
 }
 
-/* Soften the shared 0.75 home-nav shadow on the musician side */
-header.home a,
-header.home a:visited {
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+/* ===================================================================
+   SECTION LAYOUT — copy on one side, a portrait photo on the other
+   (.section--flip swaps them so the artist faces the copy).
+   Behind everything: a heavy blur of the section's own photo glowing
+   through the blue, plus a little film grain.
+   On mobile the photo becomes a full-height backdrop that fades into the
+   blue, with the copy anchored at the bottom.
+   =================================================================== */
+
+.section:not(#home) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: var(--header-height) 0 var(--footer-height);
 }
 
-/* ---- Home: album thumbnail beside the links ---- */
+/* Glow: the section photo, blurred out into a wash of its colours */
+.section:not(#home)::before {
+  content: "";
+  position: absolute;
+  inset: -15%;
+  z-index: -2;
+  background: var(--photo) var(--photo-pos, center) / cover no-repeat;
+  filter: blur(90px);
+  opacity: var(--glow, 0.45);
+}
 
-/* Home: album on the left, links on the right (full width so the album
-   stays hard-left across browsers instead of drifting toward center) */
-header.home #main-content {
+/* Grain: a tiny tiled noise texture over the whole section */
+.section:not(#home)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+}
+
+.section-photo {
+  /* The photo bleeds --photo-bleed past the centre line into the copy
+     column, then fades in along an eased curve (no hard start or end to
+     the ramp) so it melts into the glow instead of meeting it at a seam. */
+  --photo-bleed: 8vw;
+  --fade: linear-gradient(
+    var(--fade-dir, to right),
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.03) 5%,
+    rgba(0, 0, 0, 0.1) 10%,
+    rgba(0, 0, 0, 0.22) 15%,
+    rgba(0, 0, 0, 0.38) 20%,
+    rgba(0, 0, 0, 0.56) 25%,
+    rgba(0, 0, 0, 0.73) 30%,
+    rgba(0, 0, 0, 0.87) 35%,
+    rgba(0, 0, 0, 0.96) 40%,
+    #000 45%
+  );
+  grid-column: 2;
+  grid-row: 1;
+  z-index: -1;
+  margin-left: calc(-1 * var(--photo-bleed));
+  background: var(--photo) var(--photo-pos, center) / cover no-repeat;
+  -webkit-mask-image: var(--fade);
+  mask-image: var(--fade);
+}
+
+.section-body {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 2; /* above the grain */
+  align-self: center;
+  justify-self: center;
   width: 100%;
+  max-width: 38rem;
+  padding: 3rem clamp(1.5rem, 5vw, 4rem);
+  /* soft shadow so white type holds up over the glow and photo */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
-#main-content {
-  display: flex;
-  justify-content: space-between;
-  @media (width < 760px) {
-    flex-direction: column-reverse;
-    align-items: center;
+.section--flip .section-photo {
+  --fade-dir: to left;
+  grid-column: 1;
+  margin-left: 0;
+  margin-right: calc(-1 * var(--photo-bleed));
+}
+
+.section--flip .section-body {
+  grid-column: 2;
+}
+
+@media (width < 760px) {
+  .section:not(#home) {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .section-photo,
+  .section--flip .section-photo {
+    position: absolute;
+    /* --photo-lift raises a photo whose subject sits low in the frame */
+    top: calc(var(--header-height) - var(--photo-lift, 0px));
+    left: 0;
+    right: 0;
+    margin: 0;
+    height: 78vh;
+    height: 78svh;
+    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+    mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  }
+
+  .section-body {
+    padding: 0 1.5rem 1.75rem;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
   }
 }
 
-/* The "NEW SINGLE" link is a beige button, shown only on mobile home
-   (desktop home uses the album thumbnail instead) */
-header.home nav ul li.new-single-link a {
-  color: var(--single-accent);
-  background-color: var(--bar-bg);
-  padding-left: 6px;
-  padding-right: 4px;
-}
+/* ---- Photos ---- */
 
-header.home nav ul li.new-single-link {
-  @media (width >= 760px) {
-    display: none;
-  }
-}
-
-/* ---- Section backgrounds ---- */
-
-/* Promo still as a full-bleed backdrop */
-#single {
-  background-image: url("assets/new-single.jpg");
+#ep {
+  --photo: url("assets/mike-dusk.jpg");
+  --photo-pos: 40% 25%;
 }
 
 #tour {
-  background-image: url("assets/tour-dates.jpg");
-  @media (width < 760px) {
-    background-image: url("assets/wall.jpg");
-  }
+  --photo: url("assets/mike-neon.jpg");
+  --photo-pos: center 30%;
+  --glow: 0.28; /* the neon is loud — keep its wash subtle */
 }
 
 #bio {
-  background-image: url("assets/bio-page.jpg");
-  background-position: top;
+  --photo: url("assets/mike-streetlight.jpg");
+  --photo-pos: center 70%;
   @media (width < 760px) {
-    background-image: url("assets/tour-dates.jpg");
-    background-position: top;
+    --photo-lift: 22svh;
+  }
+  @media (width < 760px) and (height < 720px) {
+    --photo-lift: 30svh;
   }
 }
 
 #contact {
-  background-image: url("assets/contact-page.jpg");
-  @media (width < 760px) {
-    background-position: center;
+  --photo: url("assets/mike-lights.jpg");
+  --photo-pos: center 25%;
+}
+
+/* ===================================================================
+   NEW EP (landing)
+   =================================================================== */
+
+#ep-content {
+  @media (width >= 760px) {
+    padding-block: 2rem;
   }
 }
 
-/* ---- Tour ---- */
+#ep-cover-link {
+  display: block;
+  width: min(18rem, 30vh);
+  margin-bottom: 2rem;
+}
+
+#ep-cover {
+  width: 100%;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+#ep-eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: 0.2em;
+}
+
+#ep-title {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.1;
+  margin-top: 0.5rem;
+}
+
+#ep-blurb {
+  margin-top: 1.25rem;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+}
+
+#ep-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.ep-btn {
+  font-size: 1.05rem;
+  padding: 0.6rem 1.4rem;
+  background-color: var(--bar-ink);
+  color: var(--bar-bg);
+  border: 2px solid var(--bar-ink);
+  text-shadow: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ep-btn:hover,
+.ep-btn:focus-visible {
+  background-color: transparent;
+  color: var(--bar-ink);
+}
+
+/* Short desktop screens (e.g. 1280×720 laptops): tighten up so the
+   pre-order button stays above the fold */
+@media (width >= 760px) and (height < 820px) {
+  #ep-content {
+    padding-block: 1.5rem;
+  }
+
+  #ep-cover-link {
+    width: min(18rem, 22vh);
+    margin-bottom: 1.25rem;
+  }
+
+  #ep-title {
+    font-size: clamp(2rem, 3.4vw, 2.75rem);
+  }
+
+  #ep-blurb {
+    line-height: 1.5;
+  }
+
+  #ep-actions {
+    margin-top: 1.5rem;
+  }
+}
+
+/* Mobile: compact poster — small cover beside the title, then the blurb
+   and a full-width button, all on one screen without scrolling */
+@media (width < 760px) {
+  #ep-content {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    column-gap: 1rem;
+    align-items: center;
+  }
+
+  #ep-cover-link {
+    grid-row: 1 / span 2;
+    width: 100%;
+    margin: 0;
+  }
+
+  #ep-eyebrow {
+    grid-column: 2;
+    align-self: end;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+  }
+
+  #ep-title {
+    grid-column: 2;
+    align-self: start;
+    margin-top: 0.25rem;
+    font-size: 1.35rem;
+  }
+
+  #ep-blurb,
+  #ep-actions {
+    grid-column: 1 / -1;
+  }
+
+  #ep-blurb {
+    margin-top: 1rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  #ep-actions {
+    margin-top: 1.25rem;
+  }
+
+  .ep-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* ===================================================================
+   TOUR
+   =================================================================== */
 
 #tour-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
-  height: 100%;
+  text-align: center;
 }
 
 #tour-content h1 {
   font-size: 2.5rem;
-  margin-bottom: 4rem;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  margin-bottom: 3rem;
   @media (width < 760px) {
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
 }
 
 #tour-content a,
 #tour-content a:visited {
   color: var(--home-ink);
-  text-align: center;
   @media (width < 760px) {
     display: flex;
     flex-direction: column;
@@ -134,57 +352,38 @@ header.home nav ul li.new-single-link {
 
 #tour-stay-tuned {
   font-size: 1.75rem;
-  color: var(--home-ink);
-  text-align: center;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
-/* ---- Bio ---- */
-
-#bio {
-  display: flex;
-  flex-direction: column;
-  @media (width < 760px) {
-    text-align: center;
-  }
-}
-
-#bio-content {
-  display: flex;
-  flex-direction: column;
-  padding-left: 5%;
-  @media (width < 760px) {
-    padding-right: 5%;
-  }
-}
+/* ===================================================================
+   BIO
+   =================================================================== */
 
 #bio-content p {
-  max-width: 46rem;
-  font-size: clamp(1rem, 3.2vw, 1.35rem);
-  line-height: 1.5;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  font-weight: 400;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  line-height: 1.6;
 }
 
 #bio-content p + p {
   padding-top: 1rem;
 }
 
-/* ---- Contact ---- */
-
-#contact {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+/* ===================================================================
+   CONTACT
+   =================================================================== */
 
 #contact-content {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  @media (width < 760px) {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 #contact-message {
-  font-size: 1.5rem;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  font-size: 1.25rem;
   @media (width < 760px) {
     font-size: 1rem;
   }
@@ -192,328 +391,9 @@ header.home nav ul li.new-single-link {
 
 #contact-email {
   margin-top: 1.25rem;
-  font-size: 3rem;
-  color: var(--bar-ink);
-  background-color: var(--bar-bg);
-  @media (width < 760px) {
-    margin-top: 1.5rem;
-    font-size: 2rem;
-  }
-}
-
-/* Bio + Contact are short on mobile — sit them higher than the 38vh default */
-@media (width < 760px) {
-  .section#bio,
-  .section#contact {
-    padding-top: calc(var(--header-height) + 14vh);
-  }
-}
-
-/* ---- New single ---- */
-
-/* Center the release card over the photo; drop the 38vh photo offset */
-.section#single {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: calc(var(--header-height) + 1rem);
-  padding-bottom: calc(var(--footer-height) + 1rem);
-  padding-inline: 1.5rem;
-  overflow-x: hidden;
-}
-
-.section#single > #single-content {
-  min-width: 0;
-}
-
-/* Red card behind just the content so the surrounding photo stays clear */
-#single-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3rem;
-  width: 100%;
-  max-width: 60rem;
-  padding: 2.5rem;
-  background-color: var(--bar-bg);
-  border-radius: 6px;
-  @media (width < 760px) {
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 1.75rem;
-    text-align: center;
-  }
-}
-
-/* The CRT sits in the album-cover slot of the card — a square unit: the photo
-   bezel (assets/tv-cut.png) layered on top, the screen in its opening beneath.
-   Standby shows the album cover + play triangle; clicking plays the promo. */
-#single-tv {
-  position: relative;
-  flex: 0 0 auto;
-  width: 26rem;
-  max-width: 100%;
-  aspect-ratio: 760 / 788; /* tv-cut.png, cropped tight to the TV body */
-}
-
-#promo-tv-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-  pointer-events: none; /* clicks pass through to the play button / video below */
-  -webkit-user-drag: none;
-  user-select: none;
-}
-
-/* The picture tube sits in the photo's screen opening, bleeding a little under
-   the bezel so its rounded inner edge defines the visible screen.
-   Nudge these four values to align the picture within the opening. */
-#promo-screen {
-  position: absolute;
-  top: 9.64%;
-  left: 8.95%;
-  right: 7.63%;
-  bottom: 27.79%;
-  z-index: 1;
-  overflow: hidden;
-  background: rgb(88, 90, 83); /* powered-off CRT — the bloom surround */
-}
-
-/* Standby: the 4:3 promo still fills the screen (matches the tube ratio) */
-#tv-standby {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* The play button covers the screen; the triangle is centred over the cover */
-#tv-play {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--bar-ink);
-  cursor: pointer;
-}
-
-#single-play {
-  display: flex;
-  opacity: 0.85;
-  transition: transform 0.18s ease, opacity 0.18s ease;
-}
-
-#single-play svg {
-  width: 4.5rem;
-  height: 4.5rem;
-  margin-left: 0.2rem; /* optical centering — a play triangle's mass sits left */
-  /* all-around dark halo so the triangle reads on any (busy/yellow) frame */
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8))
-    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
-}
-
-#tv-play:hover #single-play,
-#tv-play:focus-visible #single-play {
-  transform: scale(1.08);
-  opacity: 1;
-}
-
-#tv-play:focus-visible {
-  outline: 2px solid var(--bar-ink);
-  outline-offset: 4px;
-}
-
-/* While playing: hide the cover + play button so the video owns the tube */
-#single-tv.playing #tv-standby,
-#single-tv.playing #tv-play {
-  display: none;
-}
-
-/* ---- Single page only: swap the beige theme accent for the album-art
-   yellow (#fcf251, the "MIKE TRASK" lettering). body.single-view is toggled
-   in site.js; same mechanism the producer theme uses for its green set. ---- */
-body.single-view {
-  --bar-ink: var(--single-accent);
-  --active-bg: var(--single-accent);
-  --logo-bar: url("assets/yellow-logo.svg");
-  --icon-menu: url("assets/hamburger-yellow.svg");
-  --icon-close: url("assets/cross-yellow.svg");
-}
-
-body.single-view #insta-logo {
-  content: url("assets/social-logo/insta-yellow.svg");
-}
-body.single-view #spotify-logo {
-  content: url("assets/social-logo/spotify-yellow.svg");
-}
-body.single-view #yt-logo {
-  content: url("assets/social-logo/yt-yellow.svg");
-}
-body.single-view #apple-music-logo {
-  content: url("assets/social-logo/apple-music-yellow.svg");
-}
-body.single-view #patreon-logo {
-  content: url("assets/social-logo/patreon-yellow.svg");
-}
-body.single-view #fb-logo {
-  content: url("assets/social-logo/fb-yellow.svg");
-}
-
-#single-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 0;
-  color: var(--bar-ink);
-  @media (width < 760px) {
-    align-items: stretch;
-    width: 100%;
-  }
-}
-
-#single-eyebrow {
-  font-size: 1rem;
-  letter-spacing: 0.2em;
-  color: var(--bar-ink);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-
-#single-title {
-  font-size: clamp(1.75rem, 5vw, 2.75rem);
-  line-height: 1.15;
-  margin-top: 0.25rem;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-
-#single-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1.75rem;
-  @media (width < 760px) {
-    justify-content: center;
-  }
-}
-
-.single-btn {
-  font-family: inherit;
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding: 0.55rem 1.4rem;
-  border: 2px solid var(--bar-ink);
-  cursor: pointer;
-}
-
-.single-btn--primary {
-  background-color: var(--bar-ink);
+  padding-inline: 0.4rem;
+  font-size: clamp(1.6rem, 3.4vw, 2.75rem);
   color: var(--bar-bg);
-}
-
-/* ---- Promo playback: the picture powers on inside the CRT screen ---- */
-
-/* Power-on: after a beat on the off-state tube, a bright line strikes across
-   and the picture blooms open from it. */
-#single-tv.playing #promo-frame {
-  transform-origin: center;
-  animation: crt-on 1s cubic-bezier(0.22, 0.7, 0.28, 1) 0.3s both;
-}
-
-#single-tv.playing #promo-screen::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 3px;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0 18px 5px rgba(255, 255, 255, 0.75);
-  z-index: 3;
-  pointer-events: none;
-  animation: crt-beam 1s ease-out 0.3s both;
-}
-
-/* Corner vignette + faint scanlines over the screen (cover and video alike) */
-#promo-screen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.5) 100%),
-    repeating-linear-gradient(rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
-}
-
-#promo-frame {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-#promo-frame video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* show the whole 4:3 frame — no cropping */
-  border: 0;
-}
-
-/* The picture: held as a thin bright line while the beam strikes, then
-   blooms open vertically from the center and settles to normal. */
-@keyframes crt-on {
-  0% {
-    transform: scaleY(0.012);
-    filter: brightness(2.6) saturate(0);
-  }
-  25% {
-    transform: scaleY(0.012);
-    filter: brightness(2.6) saturate(0);
-  }
-  60% {
-    transform: scaleY(1);
-    filter: brightness(1.7) saturate(0.5);
-  }
-  100% {
-    transform: scaleY(1);
-    filter: brightness(1);
-  }
-}
-
-/* The beam: a bright line streaks across the off-state tube, then fades */
-@keyframes crt-beam {
-  0% {
-    opacity: 0;
-    transform: translateY(-50%) scaleX(0.1);
-  }
-  12% {
-    opacity: 1;
-    transform: translateY(-50%) scaleX(1);
-  }
-  45% {
-    opacity: 0.8;
-  }
-  70%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #single-tv.playing #promo-frame {
-    animation: none;
-  }
-  #single-tv.playing #promo-screen::before {
-    display: none;
-  }
+  background-color: var(--bar-ink);
+  text-shadow: none;
 }

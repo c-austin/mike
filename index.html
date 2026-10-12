@@ -5,6 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mike Trask</title>
+    <meta
+      name="description"
+      content="Mike Trask's new EP, Crumbs on the Road to Hell, is available everywhere Saturday October 31st."
+    />
+    <meta property="og:title" content="Mike Trask — Crumbs on the Road to Hell" />
+    <meta
+      property="og:description"
+      content="Old drum machines, scrappy storytelling and vintage electric guitars. Available everywhere Saturday October 31st."
+    />
+    <meta
+      property="og:image"
+      content="https://miketrask.ca/assets/crumbs-on-the-road-to-hell.jpg"
+    />
+    <meta property="og:url" content="https://miketrask.ca/" />
+    <meta property="og:type" content="website" />
+    <link rel="preload" as="image" href="assets/mike-dusk.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,111 +30,114 @@
     <link rel="stylesheet" href="site.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body data-home="single">
+  <!-- data-release: when the EP is out (midnight Atlantic) — elements with
+       data-after-release swap to that text from then on (see site.js) -->
+  <body data-home="ep" data-release="2026-10-31T00:00:00-03:00">
     <header>
-      <a id="main-link" href="#single">
+      <a id="main-link" href="#ep">
         <div id="logo-container">
-          <img id="logo-image" alt="" />
+          <img id="logo-image" alt="Mike Trask" />
         </div>
       </a>
-      <div id="main-content">
-        <div id="nav-container">
-          <button
-            id="nav-button"
-            aria-controls="primary-nav"
-            aria-expanded="false"
-          >
-            <img id="nav-img" alt="" />
-          </button>
-          <nav id="primary-nav">
-            <ul>
-              <li class="new-single-link"><a href="#single">NEW SINGLE</a></li>
-              <li><a href="#bio">BIO</a></li>
-              <li>
-                <a target="_blank" href="https://miketraskmusic.bandcamp.com/"
-                  >MUSIC</a
-                >
-              </li>
-              <li>
-                <a
-                  target="_blank"
-                  href="https://www.youtube.com/@Whiskeybaptism"
-                  >VIDEO</a
-                >
-              </li>
-              <li><a href="#tour">TOUR</a></li>
-              <li><a href="producer.html">PRODUCTION</a></li>
-              <li><a href="#contact">CONTACT</a></li>
-            </ul>
-          </nav>
-        </div>
+      <div id="nav-container">
+        <button
+          id="nav-button"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+        >
+          <img id="nav-img" alt="Menu" />
+        </button>
+        <nav id="primary-nav">
+          <ul>
+            <li><a href="#ep">NEW EP</a></li>
+            <li><a href="#bio">BIO</a></li>
+            <li>
+              <a target="_blank" href="https://miketraskmusic.bandcamp.com/"
+                >MUSIC</a
+              >
+            </li>
+            <li>
+              <a target="_blank" href="https://www.youtube.com/@Whiskeybaptism"
+                >VIDEO</a
+              >
+            </li>
+            <li><a href="#tour">TOUR</a></li>
+            <li><a href="producer.html">PRODUCTION</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+          </ul>
+        </nav>
       </div>
     </header>
     <main>
-      <section class="section hide" id="single">
-        <div id="single-content">
-          <div id="single-tv">
-            <div id="promo-screen">
-              <img
-                id="tv-standby"
-                src="./assets/newstandby.jpg"
-                alt="The East Coast Eats Cars — Mike Trask"
-              />
-              <div id="promo-frame"></div>
-              <button
-                id="tv-play"
-                type="button"
-                aria-label="Play promo video — The East Coast Eats Cars"
-              >
-                <span id="single-play" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-              </button>
-            </div>
-            <img id="promo-tv-img" src="assets/tv-cut.png" alt="" aria-hidden="true" />
-          </div>
-          <div id="single-info">
-            <p id="single-eyebrow">NEW SINGLE</p>
-            <h1 id="single-title">THE EAST COAST EATS CARS</h1>
-            <div id="single-actions">
-              <a
-                class="single-btn single-btn--primary"
-                href="https://ffm.to/mike-trask-the-east-coast-eats-cars"
-                target="_blank"
-                rel="noopener"
-                >LISTEN NOW</a
-              >
-            </div>
+      <section class="section hide" id="ep">
+        <div class="section-photo"></div>
+        <div class="section-body" id="ep-content">
+          <a
+            id="ep-cover-link"
+            href="https://miketraskmusic.bandcamp.com/album/crumbs-on-the-road-to-hell"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              id="ep-cover"
+              src="assets/crumbs-on-the-road-to-hell.jpg"
+              alt="Crumbs on the Road to Hell — cover art"
+            />
+          </a>
+          <p id="ep-eyebrow" data-after-release="NEW EP · OUT NOW">
+            NEW EP · OUT OCTOBER 31
+          </p>
+          <h1 id="ep-title">CRUMBS ON THE ROAD TO HELL</h1>
+          <p id="ep-blurb">
+            If you like old drum machines, scrappy storytelling and vintage
+            electric guitars, Mike Trask's <em>Crumbs on the Road to Hell</em>
+            is for you.
+            <span data-after-release="It's available everywhere now."
+              >It's available everywhere Saturday October 31st.</span
+            >
+          </p>
+          <div id="ep-actions">
+            <a
+              class="ep-btn"
+              href="https://miketraskmusic.bandcamp.com/album/crumbs-on-the-road-to-hell"
+              target="_blank"
+              rel="noopener"
+              data-after-release="LISTEN NOW"
+              >PRE-ORDER ON BANDCAMP</a
+            >
           </div>
         </div>
       </section>
-      <section class="section hide" id="tour">
-        <div id="tour-content">
+      <section class="section section--flip hide" id="tour">
+        <div class="section-photo"></div>
+        <div class="section-body" id="tour-content">
           <h1>TOUR DATES</h1>
           <div id="tour-dates-wrapper">
             <p id="tour-stay-tuned">Stay Tuned!</p>
           </div>
         </div>
       </section>
-      <section class="section hide" id="bio">
-        <div id="bio-content">
+      <section class="section section--flip hide" id="bio">
+        <div class="section-photo"></div>
+        <div class="section-body" id="bio-content">
           <p>
-            With his inimitable vocal style and racous live shows, Mike Trask
+            With his inimitable vocal style and raucous live shows, Mike Trask
             has become a staple of the east coast music community.
           </p>
           <p>
             Raised on a healthy dose of country, blues, and folk music, Trask's
-            songriting deconstructs traditional genre conventions to reshape the
-            familiar into something extraordinary
+            songwriting deconstructs traditional genre conventions to reshape
+            the familiar into something extraordinary.
           </p>
         </div>
       </section>
       <section class="section hide" id="contact">
-        <div id="contact-content">
+        <div class="section-photo"></div>
+        <div class="section-body" id="contact-content">
           <p id="contact-message">FOR BOOKINGS OR PRODUCER INQUIRIES</p>
-          <p id="contact-email">INFO@MIKETRASK.CA</p>
+          <a id="contact-email" href="mailto:info@miketrask.ca"
+            >INFO@MIKETRASK.CA</a
+          >
         </div>
       </section>
     </main>
