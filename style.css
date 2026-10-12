@@ -89,15 +89,15 @@
   mask-image: var(--fade);
   /* very slow push-in so the long-exposure shots feel alive */
   transform-origin: var(--photo-pos, center);
-  animation: photo-drift 40s ease-in-out infinite alternate;
+  animation: photo-drift 18s ease-in-out infinite alternate;
 }
 
 @keyframes photo-drift {
   from {
-    transform: scale(1.02);
+    transform: scale(1);
   }
   to {
-    transform: scale(1.09) translate(-1%, -0.5%);
+    transform: scale(1.0875) translate(-1.3125%, -0.875%);
   }
 }
 
@@ -218,17 +218,18 @@ header:not(.home) nav a.active {
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
 }
 
-/* ---- Fog: two layers of soft haze drifting across the bottom of the
-   landing at different speeds. Each layer is two identical tiles wide and
-   slides by one tile, so the loop is seamless. ---- */
+/* ---- Fog: two layers of wispy, cloud-textured haze (fractal noise, tinted
+   pale lavender) drifting across the bottom of the landing in opposite
+   directions at different speeds. Each layer is two seamless tiles wide and
+   slides by one tile, so the loop never jumps. ---- */
 .fog {
   position: absolute;
   inset: 0;
   z-index: 0; /* over the photo, under the grain and copy */
   overflow: hidden;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 75%);
-  mask-image: linear-gradient(to top, #000 10%, transparent 75%);
+  -webkit-mask-image: linear-gradient(to top, #000 5%, rgba(0, 0, 0, 0.75) 30%, transparent 70%);
+  mask-image: linear-gradient(to top, #000 5%, rgba(0, 0, 0, 0.75) 30%, transparent 70%);
 }
 
 .fog::before,
@@ -241,63 +242,28 @@ header:not(.home) nav a.active {
   width: 200%;
   background-size: 50% 100%;
   background-repeat: repeat-x;
-  filter: blur(24px);
-  animation: fog-drift 90s linear infinite;
+  animation: fog-drift 50s linear infinite;
 }
 
+/* near layer: bigger, denser banks */
 .fog::before {
-  background-image:
-    radial-gradient(ellipse 30% 35% at 25% 78%, rgba(200, 205, 255, 0.32), transparent 70%),
-    radial-gradient(ellipse 32% 28% at 55% 90%, rgba(200, 205, 255, 0.26), transparent 70%),
-    radial-gradient(ellipse 28% 32% at 78% 72%, rgba(200, 205, 255, 0.3), transparent 70%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0035 0.009' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.86 0 0 0 0 0.87 0 0 0 0 1 0 0 0 2.2 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23f%29'/%3E%3C/svg%3E");
+  opacity: 0.525;
+  filter: blur(6px);
 }
 
+/* far layer: finer wisps, slower, drifting the other way */
 .fog::after {
-  background-image:
-    radial-gradient(ellipse 34% 30% at 35% 85%, rgba(220, 222, 255, 0.24), transparent 70%),
-    radial-gradient(ellipse 30% 36% at 68% 80%, rgba(220, 222, 255, 0.26), transparent 70%);
-  animation-duration: 140s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.016' numOctaves='4' seed='19' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.86 0 0 0 0 0.87 0 0 0 0 1 0 0 0 2 -0.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23f%29'/%3E%3C/svg%3E");
+  opacity: 0.395;
+  filter: blur(3px);
+  animation-duration: 80s;
   animation-direction: reverse;
 }
 
 @keyframes fog-drift {
   to {
     transform: translateX(-50%);
-  }
-}
-
-/* ---- Typewriter title (driven by site.js): letters are hidden until a
-   block cursor passes over them; a caret blinks at the end, then the
-   plain title is restored ---- */
-.typing .tw-char {
-  visibility: hidden;
-}
-
-.typing .tw-on {
-  visibility: visible;
-}
-
-.typing .tw-cursor {
-  visibility: visible;
-  color: transparent;
-  background-color: var(--bar-ink);
-  text-shadow: none;
-}
-
-.tw-caret {
-  display: inline-block;
-  width: 0.55em;
-  height: 0.85em;
-  margin-left: 0.08em;
-  margin-right: -0.63em; /* takes no line space, so it can never wrap */
-  vertical-align: -0.05em;
-  background: var(--bar-ink);
-  animation: tw-caret 0.5s steps(1) infinite;
-}
-
-@keyframes tw-caret {
-  50% {
-    opacity: 0;
   }
 }
 
@@ -428,43 +394,50 @@ header:not(.home) nav a.active {
   text-align: center;
 }
 
-/* Neon: white-hot tube with a red glow, like the sign in the photo,
-   with an occasional stutter */
+/* Neon: white-hot tube with a red glow, like the sign in the photo.
+   The glow breathes between full and half strength, with an occasional
+   stutter that snaps down to half and back. The letters never go out. */
 #tour-content h1 {
+  --neon-full:
+    0 0 4px rgba(255, 255, 255, 1),
+    0 0 12px rgba(255, 90, 79, 1),
+    0 0 28px rgba(255, 45, 45, 1),
+    0 0 52px rgba(255, 45, 45, 0.6);
+  --neon-half:
+    0 0 3px rgba(255, 255, 255, 0.5),
+    0 0 9px rgba(255, 90, 79, 0.5),
+    0 0 20px rgba(255, 45, 45, 0.5),
+    0 0 38px rgba(255, 45, 45, 0.3);
   font-size: 2.5rem;
   color: #fff6f4;
-  text-shadow:
-    0 0 4px #fff,
-    0 0 12px #ff5a4f,
-    0 0 28px #ff2d2d,
-    0 0 52px rgba(255, 45, 45, 0.6);
+  text-shadow: var(--neon-full);
   margin-bottom: 3rem;
-  animation: neon-flicker 7s infinite;
+  animation: neon 8s ease-in-out infinite;
   @media (width < 760px) {
     font-size: 2rem;
     margin-bottom: 1.5rem;
   }
 }
 
-@keyframes neon-flicker {
+@keyframes neon {
+  /* slow breath: full → half → full */
   0%,
-  17%,
-  19.5%,
-  22%,
-  61%,
-  63%,
+  55%,
+  70%,
+  71.2%,
+  73%,
   100% {
-    opacity: 1;
+    text-shadow: var(--neon-full);
   }
-  18%,
-  21%,
-  62% {
-    opacity: 0.45;
-    text-shadow: 0 0 4px rgba(255, 90, 79, 0.4);
+  30% {
+    text-shadow: var(--neon-half);
+  }
+  /* stutter: quick snaps down to half */
+  70.6%,
+  72.4% {
+    text-shadow: var(--neon-half);
   }
 }
-
-
 
 #tour-content a,
 #tour-content a:visited {
