@@ -20,7 +20,12 @@
     />
     <meta property="og:url" content="https://miketrask.ca/" />
     <meta property="og:type" content="website" />
-    <link rel="preload" as="image" href="assets/mike-dusk.jpg" />
+    <link rel="preload" as="image" href="assets/mike-dusk.webp" />
+    <!-- fetch the other sections' photos in the background once the landing
+         has loaded, so they're ready when someone switches pages -->
+    <link rel="prefetch" as="image" href="assets/mike-streetlight.webp" />
+    <link rel="prefetch" as="image" href="assets/mike-neon.webp" />
+    <link rel="prefetch" as="image" href="assets/mike-lights.webp" />
     <link rel="icon" href="assets/favicon/artist.ico" sizes="32x32" />
     <link rel="icon" href="assets/favicon/artist.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="assets/favicon/artist-apple-touch.png" />

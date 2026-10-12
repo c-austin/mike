@@ -17,6 +17,9 @@
   --icon-filter: none;
   --active-bg: #fff;
   --active-ink: rgb(47, 49, 100);
+
+  /* film grain: a tiny tiled noise texture (sections + mobile menu) */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ===================================================================
@@ -57,7 +60,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: var(--grain);
   opacity: 0.18;
   mix-blend-mode: overlay;
 }
@@ -87,9 +90,37 @@
   background: var(--photo) var(--photo-pos, center) / cover no-repeat;
   -webkit-mask-image: var(--fade);
   mask-image: var(--fade);
-  /* very slow push-in so the long-exposure shots feel alive */
+  /* fades in when the section is shown, then a slow push-in so the
+     long-exposure shots feel alive */
   transform-origin: var(--photo-pos, center);
-  animation: photo-drift 18s ease-in-out infinite alternate;
+  animation:
+    fade-in 1.17s ease-out both,
+    photo-drift 18s ease-in-out infinite alternate;
+}
+
+/* ---- Section change: the incoming section fades up from the blue — the
+   glow and photo first, the copy a beat later with a small rise. These run
+   every time a section is shown, since going from display: none to shown
+   restarts CSS animations. ---- */
+.section:not(#home)::before {
+  animation: fade-in 1.17s ease-out both;
+}
+
+.section-body {
+  animation: rise-in 0.78s ease-out 0.195s both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
 @keyframes photo-drift {
@@ -155,18 +186,18 @@
 /* ---- Photos ---- */
 
 #ep {
-  --photo: url("assets/mike-dusk.jpg");
+  --photo: url("assets/mike-dusk.webp");
   --photo-pos: 40% 25%;
 }
 
 #tour {
-  --photo: url("assets/mike-neon.jpg");
+  --photo: url("assets/mike-neon.webp");
   --photo-pos: center 30%;
   --glow: 0.28; /* the neon is loud — keep its wash subtle */
 }
 
 #bio {
-  --photo: url("assets/mike-streetlight.jpg");
+  --photo: url("assets/mike-streetlight.webp");
   --photo-pos: center 70%;
   @media (width < 760px) {
     --photo-lift: 22svh;
@@ -177,7 +208,7 @@
 }
 
 #contact {
-  --photo: url("assets/mike-lights.jpg");
+  --photo: url("assets/mike-lights.webp");
   --photo-pos: center 25%;
 }
 
@@ -195,6 +226,55 @@
    without pushing the other links around as you change pages */
 header:not(.home) nav a.active {
   margin-inline: -6px;
+}
+
+/* ---- Mobile menu: a full-screen panel (down to the footer icons, which
+   stay on top) with large links, the same glow + grain as the sections,
+   and links that ripple in one after another ---- */
+@media (width < 760px) {
+  [aria-expanded="true"] ~ nav {
+    bottom: 0;
+    background:
+      radial-gradient(ellipse 90% 55% at 25% 85%, rgba(150, 115, 200, 0.45), transparent 70%),
+      radial-gradient(ellipse 70% 45% at 85% 15%, rgba(255, 140, 120, 0.14), transparent 70%),
+      var(--bar-bg);
+    animation: fade-in 0.25s ease-out both;
+  }
+
+  [aria-expanded="true"] ~ nav::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--grain);
+    opacity: 0.18;
+    mix-blend-mode: overlay;
+  }
+
+  /* centre the links in the space above the footer */
+  [aria-expanded="true"] ~ nav ul {
+    padding-bottom: var(--footer-height);
+  }
+
+  [aria-expanded="true"] ~ nav ul li + li {
+    padding-top: 1.5rem;
+  }
+
+  [aria-expanded="true"] ~ nav a {
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+  }
+
+  [aria-expanded="true"] ~ nav li {
+    animation: rise-in 0.4s ease-out both;
+  }
+
+  [aria-expanded="true"] ~ nav li:nth-child(2) { animation-delay: 0.04s; }
+  [aria-expanded="true"] ~ nav li:nth-child(3) { animation-delay: 0.08s; }
+  [aria-expanded="true"] ~ nav li:nth-child(4) { animation-delay: 0.12s; }
+  [aria-expanded="true"] ~ nav li:nth-child(5) { animation-delay: 0.16s; }
+  [aria-expanded="true"] ~ nav li:nth-child(6) { animation-delay: 0.2s; }
+  [aria-expanded="true"] ~ nav li:nth-child(7) { animation-delay: 0.24s; }
 }
 
 /* ===================================================================
@@ -515,9 +595,13 @@ header:not(.home) nav a.active {
 
 @media (prefers-reduced-motion: reduce) {
   .section-photo,
+  .section:not(#home)::before,
+  .section-body,
   .fog::before,
   .fog::after,
-  #tour-content h1 {
-    animation: none;
+  #tour-content h1,
+  nav,
+  nav li {
+    animation: none !important;
   }
 }

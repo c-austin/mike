@@ -52,7 +52,19 @@
   }
 
   if (navToggle) navToggle.addEventListener("click", toggleNav);
-  navLinks.forEach((link) => link.addEventListener("click", closeNav));
+  // A link to another section leaves the menu open: render() closes it in the
+  // same frame the new section appears. Closing it here first would flash the
+  // old section for a moment before the switch. Anything else (external
+  // links, the section already showing) closes the menu right away.
+  navLinks.forEach((link) =>
+    link.addEventListener("click", () => {
+      const href = link.getAttribute("href") || "";
+      const shown = sections.find((s) => !s.classList.contains("hide"));
+      const switching =
+        href.startsWith("#") && (!shown || href.slice(1) !== shown.id);
+      if (!switching) closeNav();
+    })
+  );
 
   // ----- Release-day copy swap (artist page only; no-ops elsewhere) -----
   // Once <body data-release> has passed, elements with data-after-release
