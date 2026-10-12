@@ -194,6 +194,10 @@
   --photo: url("assets/mike-neon.webp");
   --photo-pos: center 30%;
   --glow: 0.28; /* the neon is loud — keep its wash subtle */
+  /* short phones: lift his face clear of the show list */
+  @media (width < 760px) and (height < 720px) {
+    --photo-lift: 18svh;
+  }
 }
 
 #bio {
@@ -519,26 +523,48 @@ header:not(.home) nav a.active {
   }
 }
 
-#tour-content a,
-#tour-content a:visited {
-  color: var(--home-ink);
+/* Show list: date | venue | province, in aligned columns with a thin rule
+   between shows (like the producer credits) */
+#tour-dates {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 1.75rem;
+  width: min(100%, 30rem);
+  text-align: left;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
   @media (width < 760px) {
-    display: flex;
-    flex-direction: column;
+    column-gap: 1rem;
+    font-size: 0.95rem;
   }
 }
 
-#tour-content a .vert-bar {
-  @media (width < 760px) {
-    display: none;
-  }
+#tour-dates li {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  padding-block: 0.75rem;
 }
 
-#tour-content li + li {
-  padding-top: 1rem;
-  @media (width < 760px) {
-    padding-top: 1.5rem;
-  }
+#tour-dates li[hidden] {
+  display: none;
+}
+
+/* a rule above every show that follows a visible one */
+#tour-dates li:not([hidden]) ~ li {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.show-date {
+  letter-spacing: 0.08em;
+}
+
+.show-prov {
+  opacity: 0.75;
+}
+
+a.show-venue {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 #tour-stay-tuned {

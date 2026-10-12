@@ -76,6 +76,16 @@
     });
   }
 
+  // ----- Tour dates (artist page only): a show drops off the list the day
+  // after it happens; with none left, "Stay Tuned!" shows instead -----
+  const shows = Array.from(document.querySelectorAll("#tour-dates li[data-date]"));
+  if (shows.length) {
+    const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD, local
+    shows.forEach((li) => (li.hidden = li.dataset.date < today));
+    const stayTuned = document.getElementById("tour-stay-tuned");
+    if (stayTuned) stayTuned.hidden = shows.some((li) => !li.hidden);
+  }
+
   window.addEventListener("hashchange", render);
   render();
 })();

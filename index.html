@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mike Trask</title>
-    <meta name="description" content="Mike Trask's new EP, Crumbs on the Road to Hell: old drum machines, scrappy storytelling and vintage electric guitars. Out October 31, 2026." />
+    <meta name="description" content="Mike Trask's new EP, Crumbs on the Road to Hell: old drum machines, scrappy storytelling and vintage electric guitars. Out October 30, 2026." />
     <link rel="canonical" href="https://miketrask.ca/" />
 
     <!-- Link previews (Facebook, iMessage, Slack, X, …) -->
@@ -13,7 +13,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://miketrask.ca/" />
     <meta property="og:title" content="Mike Trask — Crumbs on the Road to Hell" />
-    <meta property="og:description" content="Old drum machines, scrappy storytelling and vintage electric guitars. The new EP, out October 31, 2026." />
+    <meta property="og:description" content="Old drum machines, scrappy storytelling and vintage electric guitars. The new EP, out October 30, 2026." />
     <meta property="og:image" content="https://miketrask.ca/assets/share/artist.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -63,7 +63,7 @@
             "byArtist": {
               "@id": "https://miketrask.ca/#artist"
             },
-            "datePublished": "2026-10-31",
+            "datePublished": "2026-10-30",
             "image": "https://miketrask.ca/assets/crumbs-on-the-road-to-hell.jpg",
             "url": "https://miketraskmusic.bandcamp.com/album/crumbs-on-the-road-to-hell",
             "numTracks": 5,
@@ -153,7 +153,7 @@
   </head>
   <!-- data-release: when the EP is out (midnight Atlantic) — elements with
        data-after-release swap to that text from then on (see site.js) -->
-  <body data-home="ep" data-release="2026-10-31T00:00:00-03:00">
+  <body data-home="ep" data-release="2026-10-30T00:00:00-03:00">
     <header>
       <a id="main-link" href="#ep">
         <div id="logo-container">
@@ -207,7 +207,7 @@
             />
           </a>
           <p class="eyebrow" id="ep-eyebrow" data-after-release="NEW EP · OUT NOW">
-            NEW EP · OUT OCTOBER 31
+            NEW EP · OUT OCTOBER 30
           </p>
           <h1 id="ep-title">CRUMBS ON THE ROAD TO HELL</h1>
           <p id="ep-blurb">
@@ -215,7 +215,7 @@
             electric guitars, Mike Trask's <em>Crumbs on the Road to Hell</em>
             is for you.
             <span data-after-release="It's available everywhere now."
-              >It's available everywhere Saturday October 31st.</span
+              >It's available everywhere Friday October 30th.</span
             >
           </p>
           <div id="ep-actions">
@@ -234,9 +234,38 @@
         <div class="section-photo"></div>
         <div class="section-body" id="tour-content">
           <h1>TOUR DATES</h1>
-          <div id="tour-dates-wrapper">
-            <p id="tour-stay-tuned">Stay Tuned!</p>
-          </div>
+          <!-- One <li> per show. data-date (YYYY-MM-DD) hides the show the day
+               after it happens (site.js); once none are left, "Stay Tuned!"
+               shows instead. For tickets, wrap the venue in a link:
+               <a class="show-venue" href="…" target="_blank" rel="noopener">…</a> -->
+          <ul id="tour-dates">
+            <li data-date="2026-10-30">
+              <span class="show-date">OCT 30</span>
+              <span class="show-venue">STEEPLE GREEN</span>
+              <span class="show-prov">NS</span>
+            </li>
+            <li data-date="2026-10-31">
+              <span class="show-date">OCT 31</span>
+              <span class="show-venue">SACKVILLE LEGION</span>
+              <span class="show-prov">NB</span>
+            </li>
+            <li data-date="2026-11-01">
+              <span class="show-date">NOV 1</span>
+              <span class="show-venue">LAUNDROMAT BAR</span>
+              <span class="show-prov">NB</span>
+            </li>
+            <li data-date="2026-11-07">
+              <span class="show-date">NOV 7</span>
+              <span class="show-venue">THE CAP FRED.</span>
+              <span class="show-prov">NB</span>
+            </li>
+            <li data-date="2026-11-19">
+              <span class="show-date">NOV 19</span>
+              <span class="show-venue">BUFFALO CLUB DART</span>
+              <span class="show-prov">NS</span>
+            </li>
+          </ul>
+          <p id="tour-stay-tuned" hidden>Stay Tuned!</p>
         </div>
       </section>
       <section class="section section--flip hide" id="bio">
