@@ -28,11 +28,16 @@
 
     sections.forEach((s) => s.classList.toggle("hide", s !== target));
 
+    // First time the landing is shown: type out its title
+    if (typeTitle && target.contains(typed)) typeTitle();
+
+    // Highlight the current section's link — except on the producer's
+    // "home" splash, where the big overlay nav has no active state
     navLinks.forEach((link) => {
       const hash = (link.getAttribute("href") || "").split("#")[1];
       link.classList.toggle(
         "active",
-        Boolean(hash) && hash === target.id && target.id !== HOME
+        Boolean(hash) && hash === target.id && target.id !== "home"
       );
     });
 
@@ -60,6 +65,51 @@
     document.querySelectorAll("[data-after-release]").forEach((el) => {
       el.textContent = el.dataset.afterRelease;
     });
+  }
+
+  // ----- Typewriter title (artist landing) -----
+  // Splits [data-typewriter] into per-letter spans (hidden, but each keeps
+  // its space, so nothing reflows), then a block cursor walks across
+  // revealing them. A caret blinks at the end, then the plain title is put
+  // back. Runs the first time its section is shown (see render()). Screen
+  // readers get the full title via aria-label throughout.
+  const typed = document.querySelector("[data-typewriter]");
+  let typeTitle = null;
+  if (typed && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const text = typed.textContent.trim();
+    typed.setAttribute("aria-label", text);
+    typed.textContent = "";
+    const chars = Array.from(text).map((ch) => {
+      const span = document.createElement("span");
+      span.className = "tw-char";
+      span.setAttribute("aria-hidden", "true");
+      span.textContent = ch;
+      return typed.appendChild(span);
+    });
+    typed.classList.add("typing");
+
+    typeTitle = function () {
+      typeTitle = null; // only ever once
+      let i = 0;
+      const step = () => {
+        if (i > 0) chars[i - 1].className = "tw-char tw-on";
+        if (i < chars.length) {
+          chars[i++].className = "tw-char tw-cursor";
+          setTimeout(step, 70);
+          return;
+        }
+        const caret = document.createElement("span");
+        caret.className = "tw-caret";
+        caret.setAttribute("aria-hidden", "true");
+        typed.appendChild(caret);
+        setTimeout(() => {
+          typed.classList.remove("typing");
+          typed.removeAttribute("aria-label");
+          typed.textContent = text;
+        }, 2500);
+      };
+      setTimeout(step, 500);
+    };
   }
 
   window.addEventListener("hashchange", render);
